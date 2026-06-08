@@ -346,7 +346,15 @@ def rag_tool_node(state: BookingState) -> dict:
     except Exception:
         answer = "I'm loading my knowledge base. Please try again in a moment!"
 
-    reply = f"ℹ️ {answer}\n\nNow, back to your booking…"
+    prompt_append = ""
+    if previous_step == "collect_name":
+        prompt_append = "\n\nFirst, may I have your name?"
+    elif previous_step == "collect_pickup":
+        prompt_append = "\n\nWhere would you like to be *picked up* from?"
+    elif previous_step == "collect_destination":
+        prompt_append = "\n\nAnd where are you headed?"
+
+    reply = f"ℹ️ {answer}\n\nNow, back to your booking…{prompt_append}"
     return {
         "messages":    [AIMessage(content=reply)],
         "faq_answer":  answer,

@@ -29,7 +29,7 @@ from langgraph_agent.nodes import (
 _FAQ_STARTERS = ("how", "what", "where", "when", "is", "do", "does",
                  "can", "are", "who", "why", "which")
 # Steps where FAQ intercept is disabled (user must give a specific answer)
-_NO_FAQ_STEPS = {"greet", "collect_name", "validate_pickup",
+_NO_FAQ_STEPS = {"greet", "validate_pickup",
                  "validate_destination", "show_fare",
                  "confirm_fare", "await_payment", "done"}
 
