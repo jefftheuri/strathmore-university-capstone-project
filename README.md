@@ -38,10 +38,11 @@ pip install -r requirements.txt
 ```
 
 ### 2. Configure your API key
-Edit `.env` and set your real OpenAI API key:
+Copy `.env.example` to `.env` and set your Google API key:
 ```
-OPENAI_API_KEY=sk-...
+GOOGLE_API_KEY=your_google_api_key_here
 ```
+Get a free key at [aistudio.google.com](https://aistudio.google.com/app/apikey).
 
 ### 3. Ingest the FAQ knowledge base
 ```bash
@@ -53,18 +54,6 @@ python rag/ingest.py
 streamlit run ui/app.py
 ```
 
----
-
-## Assessment Criteria Alignment
-
-| Criterion | SureRide Component |
-|---|---|
-| Problem Framing | Drunk-driving problem in Kenya; AI-assisted safe transport |
-| Technical Execution | LangGraph agent + RAG pipeline + Streamlit UI |
-| AI Ethics & Governance | Governance doc in `docs/`; KDPA compliance, risk mitigations |
-| Integration of Learning | Agents, RAG, Prompt Engineering, AI Ethics modules |
-| Communication | Structured report and slide deck |
-| Reflection | Honest eval of limitations and next steps |
 
 ---
 

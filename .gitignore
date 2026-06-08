@@ -10,3 +10,5 @@ chroma_db/
 .DS_Store
 *.log
 *.sqlite
+# University evaluation framework PDF — not our content
+docs/AIPP\ Capstone\ Evaluation\ Framework.pdf
