@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SureRide — AIPP Capstone Presentation</title>
+  <meta name="description" content="SureRide AI-Powered Ride Booking Agent — AIPP Capstone Project, Strathmore University 2026" />
+
+  <!-- Reveal.js CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ════════════════ DESIGN TOKENS ════════════════ */
+    :root {
+      --green:      #25D366;
+      --dark-green: #128C7E;
+      --teal:       #075E54;
+      --accent:     #34ebe8;
+      --gold:       #F7C948;
+      --danger:     #FF6B6B;
+      --warn:       #FFA94D;
+      --bg:         #0D1117;
+      --surface:    #161B22;
+      --surface2:   #21262D;
+      --text:       #E6EDF3;
+      --muted:      #8B949E;
+    }
+
+    /* ════════════════ BASE ════════════════ */
+    .reveal {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+    }
+    .reveal .slides section {
+      text-align: left;
+      padding: 0 10px;
+    }
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.02em;
+      text-transform: none;
+      color: #fff;
+    }
+    .reveal code, .reveal pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .reveal section img { border: none; box-shadow: none; background: none; }
+
+    /* ════════════════ SLIDE BACKGROUNDS ════════════════ */
+    .slide-cover   { background: linear-gradient(135deg, #0D1117 0%, #0f3d36 50%, #0D1117 100%) !important; }
+    .slide-problem { background: linear-gradient(160deg, #1a0a0a 0%, #2d1515 100%) !important; }
+    .slide-solution{ background: linear-gradient(160deg, #0a1a10 0%, #0f3d2a 100%) !important; }
+    .slide-tech    { background: linear-gradient(160deg, #0D1117 0%, #0d1f3d 100%) !important; }
+    .slide-rag     { background: linear-gradient(160deg, #0D1117 0%, #1a0d3d 100%) !important; }
+    .slide-modules { background: linear-gradient(160deg, #0D1117 0%, #1a2d0d 100%) !important; }
+    .slide-ethics  { background: linear-gradient(160deg, #0D1117 0%, #2d1a00 100%) !important; }
+    .slide-demo    { background: linear-gradient(160deg, #0D1117 0%, #0f3d36 100%) !important; }
+    .slide-reflect { background: linear-gradient(160deg, #0D1117 0%, #1a1a2d 100%) !important; }
+
+    /* ════════════════ COVER SLIDE ════════════════ */
+    .cover-logo {
+      font-size: 72px;
+      margin-bottom: 8px;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    .cover-title {
+      font-size: 72px !important;
+      font-weight: 800 !important;
+      background: linear-gradient(90deg, #25D366, #34ebe8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1 !important;
+      margin: 0 !important;
+    }
+    .cover-sub {
+      font-size: 22px;
+      color: var(--muted);
+      margin-top: 12px !important;
+      font-weight: 400;
+    }
+    .cover-tag {
+      display: inline-block;
+      background: rgba(37,211,102,.15);
+      border: 1px solid rgba(37,211,102,.3);
+      color: var(--green);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      margin: 6px 4px;
+    }
+    .cover-meta {
+      margin-top: 32px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 16px;
+    }
+
+    /* ════════════════ SECTION HEADER ════════════════ */
+    .section-eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--green);
+      font-weight: 600;
+      margin-bottom: 4px !important;
+    }
+    .slide-title {
+      font-size: 42px !important;
+      font-weight: 700 !important;
+      margin-bottom: 28px !important;
+      line-height: 1.15 !important;
+    }
+    .slide-title span { color: var(--green); }
+
+    /* ════════════════ STAT GRID ════════════════ */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 20px 18px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--danger);
+      line-height: 1;
+      display: block;
+    }
+    .stat-num.green { color: var(--green); }
+    .stat-num.gold  { color: var(--gold); }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 6px; display: block; line-height: 1.4; }
+
+    /* ════════════════ PILL BADGES ════════════════ */
+    .pill {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin: 3px;
+    }
+    .pill-green  { background: rgba(37,211,102,.18); color: #25D366; border: 1px solid rgba(37,211,102,.3); }
+    .pill-blue   { background: rgba(52,235,232,.15); color: #34ebe8; border: 1px solid rgba(52,235,232,.3); }
+    .pill-purple { background: rgba(147,112,219,.15); color: #b39ddb; border: 1px solid rgba(147,112,219,.3); }
+    .pill-gold   { background: rgba(247,201,72,.15);  color: #F7C948; border: 1px solid rgba(247,201,72,.3); }
+    .pill-red    { background: rgba(255,107,107,.15); color: #FF6B6B; border: 1px solid rgba(255,107,107,.3); }
+
+    /* ════════════════ FLOW DIAGRAM ════════════════ */
+    .flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+    .flow-node {
+      background: rgba(37,211,102,.1);
+      border: 2px solid var(--green);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      min-width: 100px;
+    }
+    .flow-node.rag {
+      background: rgba(147,112,219,.15);
+      border-color: #b39ddb;
+    }
+    .flow-arrow {
+      color: var(--muted);
+      font-size: 20px;
+      margin: 0 6px;
+    }
+    .flow-label {
+      font-size: 10px;
+      color: var(--muted);
+      display: block;
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    /* ════════════════ ARCH DIAGRAM ════════════════ */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .arch-box {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .arch-box .icon  { font-size: 28px; display: block; margin-bottom: 6px; }
+    .arch-box .name  { font-size: 14px; font-weight: 700; color: #fff; }
+    .arch-box .tech  { font-size: 11px; color: var(--green); margin-top: 4px; }
+    .arch-box .desc  { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+
+    /* ════════════════ RAG PIPELINE ════════════════ */
+    .rag-pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .rag-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .rag-step {
+      background: rgba(147,112,219,.12);
+      border: 1px solid rgba(147,112,219,.3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      flex: 1;
+      color: #fff;
+    }
+    .rag-step b { color: #b39ddb; }
+    .rag-step-arrow { color: var(--muted); font-size: 18px; flex-shrink: 0; }
+
+    /* ════════════════ MODULE TABLE ════════════════ */
+    .module-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .module-card {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 14px;
+      border-left: 3px solid var(--green);
+    }
+    .module-card.purple { border-left-color: #b39ddb; }
+    .module-card.blue   { border-left-color: var(--accent); }
+    .module-card.gold   { border-left-color: var(--gold); }
+    .module-card.red    { border-left-color: var(--danger); }
+    .module-card.teal   { border-left-color: #34d8b5; }
+    .module-num   { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .module-name  { font-size: 13px; font-weight: 700; color: #fff; margin: 2px 0; }
+    .module-comp  { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+    /* ════════════════ RISK TABLE ════════════════ */
+    .risk-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
+    .risk-table th {
+      background: rgba(255,255,255,.06);
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .risk-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,.05); vertical-align: top; }
+    .risk-table tr:hover td { background: rgba(255,255,255,.03); }
+    .risk-lvl {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .risk-high   { background: rgba(255,107,107,.2); color: #FF6B6B; }
+    .risk-medium { background: rgba(255,169,77,.2);  color: #FFA94D; }
+    .risk-low    { background: rgba(37,211,102,.2);  color: #25D366; }
+
+    /* ════════════════ MITIGATION LIST ════════════════ */
+    .mitig-list { list-style: none; margin: 0; padding: 0; }
+    .mitig-list li {
+      display: flex;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      font-size: 13px;
+      align-items: flex-start;
+    }
+    .mitig-icon { font-size: 18px; flex-shrink: 0; margin-top: -1px; }
+
+    /* ════════════════ DEMO SCREEN ════════════════ */
+    .phone-frame {
+      width: 260px;
+      height: 460px;
+      background: #111;
+      border-radius: 36px;
+      border: 8px solid #2a2a2a;
+      overflow: hidden;
+      margin: 0 auto;
+      box-shadow: 0 24px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05);
+      position: relative;
+    }
+    .phone-status  { background: #128C7E; padding: 8px 14px 6px; font-size: 11px; color: rgba(255,255,255,.8); display: flex; justify-content: space-between; align-items: center; }
+    .phone-chat    { background: #ECE5DD; height: 100%; padding: 10px 8px; overflow: hidden; }
+    .phone-bubble  { background: #fff; border-radius: 0 8px 8px 8px; padding: 7px 10px; margin: 5px 0; max-width: 80%; font-size: 10px; color: #111; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+    .phone-bubble-u{ background: #DCF8C6; border-radius: 8px 0 8px 8px; padding: 7px 10px; margin: 5px 0 5px auto; max-width: 80%; font-size: 10px; color: #111; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+
+    /* ════════════════ DEMO FEATURES ════════════════ */
+    .demo-features {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 0;
+    }
+    .demo-feat {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .demo-feat .icon { font-size: 20px; flex-shrink: 0; }
+
+    /* ════════════════ REFLECT CARDS ════════════════ */
+    .reflect-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .reflect-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .reflect-card h4 { font-size: 14px !important; margin: 0 0 10px 0 !important; }
+    .reflect-card ul { margin: 0; padding-left: 16px; }
+    .reflect-card li { font-size: 12px; color: var(--muted); margin-bottom: 5px; line-height: 1.4; }
+    .reflect-card.worked  { border-top: 3px solid var(--green); }
+    .reflect-card.challenges { border-top: 3px solid var(--danger); }
+    .reflect-card.lessons  { border-top: 3px solid var(--gold); }
+    .reflect-card.future   { border-top: 3px solid var(--accent); }
+
+    /* ════════════════ KDPA BOX ════════════════ */
+    .kdpa-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .kdpa-item {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .kdpa-item .k-title { font-size: 13px; font-weight: 600; color: var(--gold); margin-bottom: 4px; }
+    .kdpa-item .k-desc  { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+    /* ════════════════ CODE BLOCK ════════════════ */
+    .code-box {
+      background: #0d1117;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      line-height: 1.6;
+      color: #e6edf3;
+      margin: 12px 0;
+      overflow: hidden;
+    }
+    .code-box .kw  { color: #ff7b72; }
+    .code-box .str { color: #a5d6ff; }
+    .code-box .cmt { color: #8b949e; }
+    .code-box .fn  { color: #d2a8ff; }
+    .code-box .gr  { color: #25D366; }
+
+    /* ════════════════ FOOTER ════════════════ */
+    .slide-footer {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: rgba(255,255,255,.2);
+    }
+
+    /* ════════════════ REVEAL OVERRIDES ════════════════ */
+    .reveal .progress { color: var(--green); }
+    .reveal .controls { color: var(--green); }
+    .reveal .slide-number { color: var(--muted); }
+
+    /* Two-column layout helper */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+    .two-col-35 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start; }
+
+    /* Highlight box */
+    .highlight-box {
+      background: rgba(37,211,102,.08);
+      border: 1px solid rgba(37,211,102,.25);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      margin: 12px 0;
+      color: #c8ffd4;
+    }
+    .highlight-box.purple {
+      background: rgba(147,112,219,.08);
+      border-color: rgba(147,112,219,.25);
+      color: #e0d4ff;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1: COVER                                           -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-cover" data-transition="fade">
+  <div style="text-align:center; padding: 20px 0;">
+    <span class="cover-logo">🚗</span>
+    <h1 class="cover-title">SureRide</h1>
+    <p class="cover-sub">AI-Powered Ride Booking Agent with Secure Live Payments</p>
+
+    <div style="margin: 20px 0;">
+      <span class="cover-tag">LangGraph Agent</span>
+      <span class="cover-tag">RAG Ingestion</span>
+      <span class="cover-tag">PesaPal v3 API</span>
+      <span class="cover-tag">Operations Dashboard</span>
+      <span class="cover-tag">KDPA Compliance</span>
+    </div>
+
+    <div class="cover-meta">
+      <strong style="color:var(--text)">AIPP Capstone Project Submission</strong> &nbsp;·&nbsp;
+      iLabAfrica | Strathmore University &nbsp;·&nbsp; June 2026
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>Strathmore University · 2026</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 2: PROBLEM FRAMING                                 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-problem" data-transition="slide">
+  <p class="section-eyebrow">01 — Problem Framing</p>
+  <h2 class="slide-title">Drunk Driving is <span>Killing Kenyans</span></h2>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <span class="stat-num">3,000+</span>
+      <span class="stat-label">Road fatalities annually in Kenya<br/><em style="color:#555">(NTSA, 2024)</em></span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">30%</span>
+      <span class="stat-label">Attributed to alcohol-impaired driving</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num green">19</span>
+      <span class="stat-label">Affluent Nairobi pilot zones geofenced for driver vetting</span>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 10px;">
+    <strong>🎯 AI Suitability & Friction Removal:</strong> Stateful conversational AI eliminates booking friction (WhatsApp interface), while RAG guarantees grounded policy compliance (fares/rules) and fuzzy geofencing manages pilot availability.
+  </div>
+
+  <p style="font-size:13px; color:var(--muted); margin-top:10px;">
+    By geofencing to 19 pilot zones, we manage driver capacity and route safety while testing the core conversational engine.
+  </p>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>02 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 3: SOLUTION OVERVIEW                               -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-solution" data-transition="slide">
+  <p class="section-eyebrow">02 — Solution Overview</p>
+  <h2 class="slide-title"><span>SureRide</span> — How It Works</h2>
+
+  <div class="flow">
+    <div class="flow-node">👋<br/><span class="flow-label">Greet</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">👤<br/><span class="flow-label">Name</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">📍<br/><span class="flow-label">Pickup (Fuzzy)</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">🏁<br/><span class="flow-label">Dest (Fuzzy)</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">🧾<br/><span class="flow-label">Fare Card</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">💳<br/><span class="flow-label">PesaPal Link</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="background:rgba(37,211,102,.25)">🚗<br/><span class="flow-label">Booked ✅</span></div>
+  </div>
+
+  <div style="text-align:center; margin: 4px 0 10px; font-size:12px; color:var(--muted);">
+    ↕ At any step, user can ask a question → RAG knowledge base answers → booking resumes
+  </div>
+
+  <div class="arch-grid">
+    <div class="arch-box">
+      <span class="icon">🤖</span>
+      <div class="name">LangGraph Agent</div>
+      <div class="tech">Stateful conversation</div>
+      <div class="desc">Multi-turn booking flow with geofence validation and payment checking nodes</div>
+    </div>
+    <div class="arch-box">
+      <span class="icon">🧠</span>
+      <div class="name">RAG Knowledge Base</div>
+      <div class="tech">ChromaDB + Gemini</div>
+      <div class="desc">FAQ retrieval — pricing, service areas, safety — grounded in verified company policy</div>
+    </div>
+    <div class="arch-box">
+      <span class="icon">📊</span>
+      <div class="name">Double-View UI</div>
+      <div class="tech">Streamlit Dashboard</div>
+      <div class="desc">Toggle between WhatsApp chat booking and a full operations dashboard with demand metrics</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>03 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 4: LANGGRAPH TECHNICAL ARCHITECTURE                -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-tech" data-transition="slide">
+  <p class="section-eyebrow">03 — Technical Architecture</p>
+  <h2 class="slide-title">LangGraph <span>State Machine</span></h2>
+
+  <div class="two-col">
+    <div>
+      <div class="code-box">
+<span class="cmt"># BookingState — the single source of truth</span>
+<span class="kw">class</span> <span class="fn">BookingState</span>(TypedDict):
+  messages:     <span class="gr">Annotated[list, add_messages]</span>
+  user_name:    <span class="str">str</span>
+  pickup_zone:  <span class="str">str</span>
+  dest_zone:    <span class="str">str</span>
+  fare_kes:     <span class="str">int</span>
+  pesapal_url:  <span class="str">str</span>
+  current_step: <span class="str">str</span>
+
+<span class="cmt"># Node check - fuzzy matched geofences</span>
+<span class="kw">def</span> <span class="fn">validate_pickup_node</span>(state):
+  zone = find_zone(state[<span class="str">"pickup_raw"</span>])
+  <span class="kw">if</span> zone:
+    <span class="kw">return</span> {<span class="str">"pickup_zone"</span>: zone, <span class="str">"step"</span>: <span class="str">"destination"</span>}
+  <span class="kw">return</span> {<span class="str">"step"</span>: <span class="str">"collect_pickup"</span>}
+      </div>
+    </div>
+
+    <div>
+      <p style="font-size:13px; color:var(--muted); margin-top:0;">Key design decisions:</p>
+      <ul style="font-size:13px; color:var(--muted); line-height:1.9; padding-left:16px;">
+        <li><strong style="color:#fff">Dispatcher pattern</strong> — one node reads <code style="font-size:11px; color:var(--green)">current_step</code> and routes, keeping the graph simple</li>
+        <li><strong style="color:#fff">Fuzzy Matcher</strong> — difflib-based matching filters user input against the 19 zones</li>
+        <li><strong style="color:#fff">add_messages reducer</strong> — conversation history is append-only and never lost</li>
+        <li><strong style="color:#fff">FAQ intercept</strong> — routes to RAG mid-booking, then resumes seamlessly</li>
+        <li><strong style="color:#fff">Human-in-the-loop</strong> — no booking is confirmed without explicit user confirmation</li>
+      </ul>
+
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
+        <span class="pill pill-green">LangGraph 1.2</span>
+        <span class="pill pill-blue">LangChain 1.3</span>
+        <span class="pill pill-purple">Gemini 1.5 Flash</span>
+        <span class="pill pill-gold">Python 3.13</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>04 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 5: TECHNICAL EXECUTION & DASHBOARD                 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-tech" data-transition="slide">
+  <p class="section-eyebrow">04 — Technical Execution</p>
+  <h2 class="slide-title">Operations <span>Dashboard UI</span></h2>
+
+  <div class="two-col-35">
+    <div>
+      <p style="font-size:13px; color:var(--muted); margin-top:0; margin-bottom:12px;">
+        Slide 5 Framework checklist requirement met:
+      </p>
+      <div class="rag-pipeline">
+        <div class="rag-row">
+          <div class="rag-step"><b>📊 KPI Cards</b> — Total bookings, total KES revenue, active geofenced pilots, and PesaPal completion rate</div>
+        </div>
+        <div class="rag-row">
+          <div class="rag-step"><b>🗺️ Bar Chart</b> — Live visual chart mapping ride popularity across the 10 most popular geofenced zones</div>
+        </div>
+        <div class="rag-row">
+          <div class="rag-step"><b>⚖️ Ethics KPIs</b> — Breathalyzer pass rate, active geofenced alarms, and KDPA compliance checks</div>
+        </div>
+        <div class="rag-row">
+          <div class="rag-step"><b>📋 Audit Feed</b> — Real-time table showing passenger names, routes, and PesaPal transaction references</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="highlight-box purple">
+        <strong>Software Engineering Rigor:</strong><br/><br/>
+        The prototype is backed by <strong>26/26 passing unit tests</strong> (covering fuzzy match thresholds, Haversine road factor calculations, and Fri/Sat night surge rules). Production secrets are secured using dotenv environment variables.
+      </div>
+      <div class="highlight-box">
+        <strong>UI Toggle:</strong> Users can dynamically toggle between the WhatsApp chat mode and the operations dashboard using a sidebar screen selector.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>05 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 6: RAG FAQ GROUNDING                               -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-rag" data-transition="slide">
+  <p class="section-eyebrow">05 — RAG Pipeline</p>
+  <h2 class="slide-title">Retrieval-Augmented <span>Generation</span></h2>
+
+  <div class="two-col-35">
+    <div>
+      <p style="font-size:13px; color:var(--muted); margin-top:0; margin-bottom:12px;">
+        Ingestion (one-time) — <em style="color:var(--green)">python rag/ingest.py</em>
+      </p>
+      <div class="rag-pipeline">
+        <div class="rag-row">
+          <div class="rag-step"><b>📄 Source</b> — sureride_faq.txt<br/><span style="font-size:11px;color:var(--muted)">Aligned with geofenced pricing &amp; 19 zones</span></div>
+        </div>
+        <div class="rag-row" style="justify-content:center"><div class="rag-step-arrow">↓</div></div>
+        <div class="rag-row">
+          <div class="rag-step"><b>✂️ Chunk</b> — RecursiveCharacterTextSplitter<br/><span style="font-size:11px;color:var(--muted)">chunk_size=400, overlap=60 → 29 chunks</span></div>
+        </div>
+        <div class="rag-row" style="justify-content:center"><div class="rag-step-arrow">↓</div></div>
+        <div class="rag-row">
+          <div class="rag-step"><b>🧮 Embed</b> — Gemini embedding-001<br/><span style="font-size:11px;color:var(--muted)">768-dim semantic vectors</span></div>
+        </div>
+        <div class="rag-row" style="justify-content:center"><div class="rag-step-arrow">↓</div></div>
+        <div class="rag-row">
+          <div class="rag-step"><b>🗄️ Store</b> — ChromaDB (local, persisted)<br/><span style="font-size:11px;color:var(--muted)">Collection: sureride_faq</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="highlight-box purple">
+        <strong>Why RAG over pure LLM?</strong><br/><br/>
+        A raw LLM might <em>invent</em> pricing (e.g., "KES 50 base fare") or service areas that don't exist. RAG constrains the model to answer <strong>only from verified company policy</strong> — eliminating hallucination in FAQ responses.
+      </div>
+
+      <div style="margin-top:14px;">
+        <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">Test query results:</p>
+        <div style="background:var(--surface); border-radius:8px; padding:12px; font-size:11.5px; line-height:1.6;">
+          <div style="color:var(--accent);">Q: "How much does a ride cost?"</div>
+          <div style="color:var(--muted);">→ Retrieved: PRICING section — KES 150 base, KES 50 fee, KES 35/km ✅</div>
+          <div style="color:var(--accent); margin-top:6px;">Q: "What areas do you cover?"</div>
+          <div style="color:var(--muted);">→ Retrieved: 19 geofenced zones in Nairobi ✅</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>06 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 7: MODULE INTEGRATION                              -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-modules" data-transition="slide">
+  <p class="section-eyebrow">06 — Integration of Learning</p>
+  <h2 class="slide-title">AIPP <span>Module Mapping</span></h2>
+
+  <p style="font-size:13px; color:var(--muted); margin-top:-10px; margin-bottom:6px;">
+    SureRide integrates concepts from <strong style="color:#fff">6 AIPP course modules</strong>:
+  </p>
+
+  <div class="module-grid">
+    <div class="module-card">
+      <div class="module-num">Module 1</div>
+      <div class="module-name">Foundations of AI</div>
+      <div class="module-comp">Problem framing: identifying drunk-driving as a solvable AI problem; selecting stateful conversational agent paradigms</div>
+    </div>
+    <div class="module-card purple">
+      <div class="module-num">Module 2</div>
+      <div class="module-name">Prompt Engineering</div>
+      <div class="module-comp">RAG grounding system prompt design with role constraints and few-shot formatting; context window optimization</div>
+    </div>
+    <div class="module-card blue">
+      <div class="module-num">Module 3</div>
+      <div class="module-name">AI Agents & Orchestration</div>
+      <div class="module-comp">LangGraph StateGraph with dispatcher pattern, geofence check nodes, human-in-the-loop payment validation gates</div>
+    </div>
+    <div class="module-card gold">
+      <div class="module-num">Module 4</div>
+      <div class="module-name">Retrieval-Augmented Generation</div>
+      <div class="module-comp">ChromaDB vector store; Gemini embedding-001; text splitters; retriever integration as a LangGraph tool node</div>
+    </div>
+    <div class="module-card red">
+      <div class="module-num">Module 5</div>
+      <div class="module-name">AI Ethics & Governance</div>
+      <div class="module-comp">KDPA 2019 compliance; financial data minimization; geofencing risk bounding; risk register; LangGraph state explainability</div>
+    </div>
+    <div class="module-card teal">
+      <div class="module-num">Module 6</div>
+      <div class="module-name">AI Applications & Deployment</div>
+      <div class="module-comp">Streamlit double-view UI (booking chat + operations dashboard); live production PesaPal REST API payment polling</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>07 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 8: ETHICS & GOVERNANCE                             -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-ethics" data-transition="slide">
+  <p class="section-eyebrow">07 — AI Ethics & Governance</p>
+  <h2 class="slide-title">Risks, Mitigations & <span>KDPA Compliance</span></h2>
+
+  <div class="two-col">
+    <div>
+      <table class="risk-table">
+        <thead>
+          <tr><th>Risk</th><th>Level</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Hallucination in booking details</td><td><span class="risk-lvl risk-high">High</span></td></tr>
+          <tr><td>Location data exposure</td><td><span class="risk-lvl risk-medium">Medium</span></td></tr>
+          <tr><td>Payment failure / API timeouts</td><td><span class="risk-lvl risk-high">High</span></td></tr>
+          <tr><td>Prompt injection attacks</td><td><span class="risk-lvl risk-medium">Medium</span></td></tr>
+          <tr><td>Service unavailability (Gemini down)</td><td><span class="risk-lvl risk-high">High</span></td></tr>
+          <tr><td>Driver bias in future matching</td><td><span class="risk-lvl risk-medium">Medium</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box" style="margin-top:12px; font-size:12px;">
+        <strong>Key control:</strong> Geofencing limits the pilot to vetted zones, and PesaPal PCI-DSS compliance ensures card and wallet numbers are never stored on our end.
+      </div>
+    </div>
+
+    <div>
+      <p style="font-size:12px; color:var(--muted); margin:0 0 8px;">KDPA 2019 Compliance</p>
+      <div class="kdpa-grid">
+        <div class="kdpa-item">
+          <div class="k-title">🔒 Consent</div>
+          <div class="k-desc">Proceeding with chat constitutes informed consent; disclosed at session start</div>
+        </div>
+        <div class="kdpa-item">
+          <div class="k-title">📦 Minimisation</div>
+          <div class="k-desc">Only name, pickup, destination collected. No phone, ID, or card details stored.</div>
+        </div>
+        <div class="kdpa-item">
+          <div class="k-title">🗑️ Erasure</div>
+          <div class="k-desc">State lives in session_state only — cleared on page refresh. No DB writes.</div>
+        </div>
+        <div class="kdpa-item">
+          <div class="k-title">📋 Accountability</div>
+          <div class="k-desc">DPO appointed; all payment references logged with timestamps for audit.</div>
+        </div>
+      </div>
+
+      <ul class="mitig-list" style="margin-top:10px;">
+        <li><span class="mitig-icon">🛡️</span><span><strong>RAG grounding</strong> — LLM answers only from verified policy docs</span></li>
+        <li><span class="mitig-icon">🔀</span><span><strong>LangGraph trace</strong> — rule-based state transitions are fully auditable</span></li>
+        <li><span class="mitig-icon">📞</span><span><strong>Human escalation</strong> — "help" connects to live agent anytime</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>08 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 9: LIVE DEMO                                       -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-demo" data-transition="slide">
+  <p class="section-eyebrow">08 — Demonstration</p>
+  <h2 class="slide-title">Live Demo — <span>WhatsApp Chat UI</span></h2>
+
+  <div class="two-col">
+    <div class="phone-frame">
+      <div class="phone-status">
+        <span>🚗 SureRide &nbsp; 🟢 online</span>
+        <span>20:00</span>
+      </div>
+      <div class="phone-chat">
+        <div class="phone-bubble">👋 Welcome to <strong>SureRide</strong>! May I have your name?</div>
+        <div class="phone-bubble-u">Brian</div>
+        <div class="phone-bubble">Nice to meet you, Brian! 😊 Where is your pickup?</div>
+        <div class="phone-bubble-u">Westlands</div>
+        <div class="phone-bubble">✅ Westlands confirmed. And destination?</div>
+        <div class="phone-bubble-u">Karen</div>
+        <div class="phone-bubble">✅ Karen confirmed. Dynamic Fare: KES 960.<br/><br/>💳 [Pay KES 960 via PesaPal]</div>
+        <div class="phone-bubble-u">Check Payment</div>
+        <div class="phone-bubble">🎉 Payment confirmed! ETA: 5–10 min 🙏</div>
+      </div>
+    </div>
+
+    <div>
+      <p style="font-size:13px; color:var(--muted); margin-top:0;">Running at <strong style="color:var(--green)">localhost:8501</strong></p>
+
+      <div class="demo-features">
+        <div class="demo-feat"><span class="icon">💬</span><span><strong>WhatsApp design</strong> — green bubbles, timestamps, sticky header bar</span></div>
+        <div class="demo-feat"><span class="icon">🧾</span><span><strong>Fare Breakdown Card</strong> — line-item details including platform fees</span></div>
+        <div class="demo-feat"><span class="icon">💳</span><span><strong>PesaPal Checkout Link</strong> — redirect link inside booking bubble</span></div>
+        <div class="demo-feat"><span class="icon">📊</span><span><strong>Operations Dashboard</strong> — metrics tab for capstone assessors</span></div>
+      </div>
+
+      <div class="highlight-box" style="margin-top:10px; font-size:12px;">
+        <strong>Run it yourself:</strong><br/>
+        <code style="font-family:'JetBrains Mono',monospace; font-size:11px;">
+          source .venv/bin/activate<br/>
+          streamlit run ui/app.py
+        </code>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>09 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 10: REFLECTION                                      -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-reflect" data-transition="slide">
+  <p class="section-eyebrow">09 — Reflection</p>
+  <h2 class="slide-title">What Worked, Challenges &amp; <span>Next Steps</span></h2>
+
+  <div class="reflect-grid">
+    <div class="reflect-card worked">
+      <h4>✅ What Worked Well</h4>
+      <ul>
+        <li>LangGraph dispatcher pattern — clean, auditable, and easy to extend</li>
+        <li>RAG grounding eliminated hallucinated pricing and service areas</li>
+        <li>PesaPal delegated payments kept card credentials out of database</li>
+        <li>Streamlit custom CSS isolation allowed native look and feel</li>
+      </ul>
+    </div>
+
+    <div class="reflect-card challenges">
+      <h4>⚠️ Challenges Encountered</h4>
+      <ul>
+        <li>Streamlit iframe constraints required dynamic height estimation</li>
+        <li>Live PesaPal REST authentication and signature checking</li>
+        <li>Fuzzy matching user entries without blocking natural sentences</li>
+        <li>Local testing constraints mitigated by polling status checks</li>
+      </ul>
+    </div>
+
+    <div class="reflect-card lessons">
+      <h4>💡 Lessons Learned</h4>
+      <ul>
+        <li>Start with a modular core layout before introducing third-party APIs</li>
+        <li>KDPA compliance is simpler when data minimization is built-in</li>
+        <li>Fuzzy match thresholds need padding to prevent false positives</li>
+        <li>Decoupling the billing stack secures the architecture</li>
+      </ul>
+    </div>
+
+    <div class="reflect-card future">
+      <h4>🚀 Future Iterations</h4>
+      <ul>
+        <li>Google Maps routing API integration for precise driving lines</li>
+        <li>Swahili language localization using multilingual models</li>
+        <li>NER name parsing to replace simple heuristic string splitting</li>
+        <li>Independent KDPA Data Protection Impact Assessment (DPIA)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer"><span>SureRide — AIPP Capstone</span><span>10 / 10</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 11: THANK YOU                                      -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="slide-cover" data-transition="fade">
+  <div style="text-align:center; padding: 30px 0;">
+    <span style="font-size:60px;">🚗</span>
+    <h2 style="font-size:52px; font-weight:800; background:linear-gradient(90deg,#25D366,#34ebe8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin: 10px 0;">
+      Thank You
+    </h2>
+    <p style="font-size:18px; color:var(--muted); margin-bottom:30px;">SureRide — AIPP Capstone Project · Strathmore University · June 2026</p>
+
+    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:24px;">
+      <span class="pill pill-green">🤖 LangGraph Agent</span>
+      <span class="pill pill-purple">🧠 RAG Pipeline</span>
+      <span class="pill pill-blue">💬 Streamlit UI</span>
+      <span class="pill pill-gold">⚖️ KDPA Governance</span>
+    </div>
+
+    <div style="background:rgba(37,211,102,.08); border:1px solid rgba(37,211,102,.2); border-radius:12px; padding:16px 20px; display:inline-block; font-size:13px; color:var(--muted);">
+      <strong style="color:#fff">Live demo:</strong> &nbsp;
+      <code style="color:var(--green); font-family:'JetBrains Mono',monospace;">localhost:8501</code>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <strong style="color:#fff">Source:</strong> &nbsp;
+      <code style="color:var(--green); font-family:'JetBrains Mono',monospace;">sureride-capstone/</code>
+    </div>
+
+    <p style="font-size:13px; color:rgba(255,255,255,.3); margin-top:30px;">
+      Use ← → arrow keys or click to navigate &nbsp;·&nbsp; Press <kbd style="background:rgba(255,255,255,.1); border-radius:4px; padding:2px 6px; font-size:11px;">F</kbd> for fullscreen
+    </p>
+  </div>
+</section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: false,
+    progress: true,
+    controls: true,
+    center: false,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    width: 1100,
+    height: 700,
+    margin: 0.06,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

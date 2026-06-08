@@ -1,0 +1,117 @@
+SureRide — Frequently Asked Questions (FAQ)
+============================================
+
+SECTION 1: WHAT IS SURERIDE?
+------------------------------
+Q: What is SureRide?
+A: SureRide is an AI-powered ride-booking service designed specifically for people who need a safe way home after a night out. Our mission is to eliminate drunk driving in Kenya by making it effortless and affordable to book a sober, professional driver through a simple WhatsApp-style chat interface.
+
+Q: Why was SureRide created?
+A: Drunk driving is a leading cause of road fatalities in Kenya. According to the National Transport and Safety Authority (NTSA), alcohol-related crashes account for over 30% of road deaths annually. SureRide was created to provide a friction-free, AI-assisted alternative so no one has to get behind the wheel impaired.
+
+Q: Is SureRide available 24 hours a day?
+A: Yes. SureRide operates 24 hours a day, 7 days a week, including public holidays. We are always available when you need us most — especially late at night and on weekends.
+
+
+SECTION 2: HOW IT WORKS
+------------------------
+Q: How do I book a ride with SureRide?
+A: Booking is simple. Just start a chat with the SureRide AI assistant and follow the steps:
+   1. Tell the assistant your name.
+   2. Share your current pickup location.
+   3. Tell us where you are headed (your destination).
+   4. Review the booking summary and confirm with "yes".
+   5. A verified driver will be dispatched immediately.
+
+Q: How long does it take for a driver to arrive?
+A: In most urban areas (Nairobi CBD, Westlands, Kilimani, Lavington, Karen), a driver typically arrives within 5 to 15 minutes of confirmation. In peri-urban or rural areas arrival times may be 20 to 30 minutes.
+
+Q: Can I book a ride for someone else?
+A: Yes. You can book a ride on behalf of a friend or family member. Simply provide their name and pickup location when prompted, and inform the driver on arrival.
+
+Q: Can I cancel a booking?
+A: Yes. You can cancel before a driver has been dispatched by responding "no" during the confirmation step, or by messaging "cancel" at any time. Cancellations after driver dispatch may incur a small cancellation fee.
+
+Q: What happens after my booking is confirmed?
+A: Once you confirm, SureRide matches you with the nearest available verified driver. You will receive the driver's name, vehicle make, and estimated arrival time. You can track the driver in real time via a link sent to your phone.
+
+
+SECTION 3: PRICING
+-------------------
+Q: How much does a SureRide trip cost?
+A: Pricing is distance-based and transparent. Base fare: KES 150. Per-kilometre rate: KES 35 (estimated road distance). Booking fee: KES 50. Minimum trip cost is KES 300. A 1.5× surge multiplier automatically applies on Friday and Saturday nights between 10:00 PM and 3:00 AM (peak hours).
+
+Q: Are there any hidden charges?
+A: No. The fare shown at confirmation is what you pay. The KES 50 booking fee is fully transparent and shown as a separate line item. Tolls and parking, if applicable, are noted upfront.
+
+Q: How do I pay for my SureRide trip?
+A: SureRide uses secure, live PesaPal integration. Before a ride is confirmed and your driver is dispatched, the assistant will display a payment link in the chat. You can click to pay via M-Pesa or Card. The booking is instantly confirmed once PesaPal completes the transaction.
+
+Q: Do I get a receipt?
+A: Yes. A detailed receipt including trip distance, duration, and fare breakdown is sent to you via SMS and is also available in the app chat history after every trip.
+
+
+SECTION 4: SERVICE AREAS
+--------------------------
+Q: Where does SureRide operate?
+A: During the pilot phase, SureRide operates exclusively in the following 19 geofenced zones in Nairobi:
+   - CBD, Westlands, Parklands, Gigiri, Runda, Muthaiga, Ridgeways, Rosslyn, Spring Valley, Loresho, Kilimani, Kileleshwa, Lavington, Riverside, Upperhill, Karen, Langata, South B, and South C.
+   Both your pickup and destination locations must be within these 19 zones to book a ride.
+
+Q: What if I am outside your service area?
+A: If your pickup or drop-off is outside our current coverage, the assistant will let you know and display the list of valid pilot zones. You can also join our waitlist for areas not yet covered.
+
+Q: Do you operate on highways (e.g., Thika Road, Mombasa Road)?
+A: Yes. SureRide drivers are licensed to operate on all major highways connecting our active pilot zones.
+
+
+SECTION 5: SAFETY
+------------------
+Q: How does SureRide ensure driver safety?
+A: Every SureRide driver goes through a rigorous vetting process:
+   - Valid driving licence (minimum 3 years experience)
+   - National Police Clearance Certificate (certificate of good conduct)
+   - Psychometric testing
+   - Vehicle inspection (roadworthy certificate)
+   - Real-time GPS tracking throughout every trip
+   - Zero-alcohol policy enforced via breathalyser tests at dispatch
+
+Q: What happens if I feel unsafe during a trip?
+A: The SureRide app has an emergency button that immediately alerts our 24/7 safety response team and shares your real-time GPS location. You can also call 0800 SURE (7873) — a toll-free emergency line.
+
+Q: Are SureRide vehicles insured?
+A: Yes. All SureRide vehicles carry comprehensive insurance including passenger liability cover.
+
+Q: Can I share my trip details with someone?
+A: Yes. After booking you can tap "Share Trip" to send your live tracking link and driver details to a trusted contact via WhatsApp or SMS.
+
+Q: What is SureRide's alcohol policy for passengers?
+A: We welcome passengers who have been drinking — that is exactly who we are here for. However, passengers who are disruptive, abusive, or damage the vehicle may be removed and charged a cleaning or repair fee.
+
+
+SECTION 6: DATA & PRIVACY
+---------------------------
+Q: What personal data does SureRide collect?
+A: We collect only what is necessary to complete your booking: your name, pickup location, destination, and payment information. We do not store your location history beyond 30 days, and we never sell your data to third parties.
+
+Q: Is SureRide compliant with the Kenya Data Protection Act (KDPA)?
+A: Yes. SureRide is fully compliant with the Kenya Data Protection Act 2019. We have appointed a Data Protection Officer (DPO), maintain a data processing register, and obtain explicit consent before collecting any personal information.
+
+Q: Can I request deletion of my data?
+A: Yes. You have the right to access, correct, and delete your personal data. Send a request to privacy@sureride.co.ke and we will process it within 7 business days.
+
+
+SECTION 7: SUPPORT
+--------------------
+Q: How do I contact SureRide support?
+A: You can reach us through the following channels:
+   - In-chat: Type "help" or "agent" to speak to a live support agent.
+   - Email: support@sureride.co.ke
+   - Phone: 0800 SURE (7873) — toll-free, 24/7
+   - WhatsApp: +254 700 SURE (7873)
+
+Q: What do I do if my driver does not arrive?
+A: If your driver has not arrived within the estimated time, type "where is my driver" in the chat. Our system will provide a live update. If the issue persists, type "help" to connect with a support agent who can reassign a driver.
+
+Q: How do I report a lost item?
+A: Type "lost item" in the SureRide chat and provide the trip date and a description of the item. Our team will contact the driver and help arrange its return.

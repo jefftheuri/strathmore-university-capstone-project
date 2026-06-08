@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SureRide — Executive Portfolio Report</title>
+<style>
+  /* ── Print & screen base ── */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green:   #128C7E;
+    --green-l: #25D366;
+    --accent:  #0d6efd;
+    --danger:  #dc3545;
+    --warn:    #fd7e14;
+    --muted:   #6c757d;
+    --border:  #dee2e6;
+    --bg:      #ffffff;
+    --surface: #f8f9fa;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 11pt;
+    line-height: 1.7;
+    color: #212529;
+    background: #e5e5e5;
+  }
+
+  /* ── Page wrapper ── */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    margin: 20px auto;
+    padding: 20mm 22mm 20mm 22mm;
+    box-shadow: 0 4px 24px rgba(0,0,0,.18);
+  }
+
+  @media print {
+    body { background: white; }
+    .page { margin: 0; padding: 18mm 20mm; box-shadow: none; width: 100%; }
+    .no-break { page-break-inside: avoid; }
+    h2 { page-break-before: always; }
+    h2:first-of-type { page-break-before: avoid; }
+  }
+
+  /* ── Cover ── */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30mm 0 20mm;
+    border-bottom: 3px solid var(--green);
+    margin-bottom: 12mm;
+  }
+  .cover-icon { font-size: 64px; margin-bottom: 10px; }
+  .cover h1 {
+    font-size: 34pt;
+    font-weight: 800;
+    color: #0f3d2a;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .cover-sub {
+    font-size: 16pt;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .cover-meta {
+    font-size: 10pt;
+    color: var(--muted);
+    line-height: 2;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: #e8f5e9;
+    border: 1px solid var(--green);
+    color: var(--green);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 9.5pt;
+    font-weight: 600;
+    margin-top: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ── Typography ── */
+  h2 {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #0f3d2a;
+    border-left: 5px solid var(--green);
+    padding-left: 12px;
+    margin: 10mm 0 5mm;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    font-weight: 600;
+    color: #1a5c45;
+    margin: 6mm 0 3mm;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-size: 10.5pt;
+    font-weight: 600;
+    color: #333;
+    margin: 4mm 0 2mm;
+  }
+  p { margin-bottom: 4mm; }
+  ul, ol { margin-left: 6mm; margin-bottom: 4mm; }
+  li { margin-bottom: 1.5mm; }
+  strong { color: #0f3d2a; }
+  em { color: var(--muted); font-style: italic; }
+
+  /* ── Section divider ── */
+  .section-number {
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    text-align: center;
+    line-height: 22px;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── Tables ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4mm 0 6mm;
+    font-size: 9.5pt;
+  }
+  th {
+    background: #0f3d2a;
+    color: white;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 9pt;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f8f9fa; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 3mm 0;
+  }
+  .card-green {
+    background: #e8f5e9;
+    border-left: 4px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    margin: 2mm 0;
+  }
+  .card-blue {
+    background: #e3f2fd;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    margin: 2mm 0;
+  }
+  .card-warn {
+    background: #fff3e0;
+    border-left: 4px solid var(--warn);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    margin: 2mm 0;
+  }
+
+  /* ── KPI row ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 4mm 0;
+  }
+  .kpi {
+    background: #0f3d2a;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .kpi-value { font-size: 18pt; font-weight: 800; color: var(--green-l); }
+  .kpi-label { font-size: 8pt; color: rgba(255,255,255,.7); margin-top: 2px; }
+
+  /* ── Flow diagram (text-based) ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 4mm 0;
+    font-size: 9pt;
+  }
+  .flow-step {
+    background: var(--green);
+    color: white;
+    border-radius: 16px;
+    padding: 4px 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .flow-arrow { color: var(--muted); font-size: 12pt; }
+
+  /* ── Risk badge ── */
+  .risk-high   { color: #dc3545; font-weight: 700; }
+  .risk-medium { color: #fd7e14; font-weight: 700; }
+  .risk-low    { color: #198754; font-weight: 700; }
+
+  /* ── Code block ── */
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5pt;
+    overflow-x: auto;
+    margin: 3mm 0 5mm;
+    line-height: 1.6;
+  }
+
+  /* ── Grade table ── */
+  .grade-pass-merit { color: #198754; font-weight: 700; }
+  .grade-pass       { color: #0d6efd; font-weight: 700; }
+  .grade-fail       { color: #dc3545; font-weight: 700; }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 12mm;
+    padding-top: 4mm;
+    border-top: 1px solid var(--border);
+    font-size: 8.5pt;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── TOC ── */
+  .toc { margin: 6mm 0 10mm; }
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    border-bottom: 1px dotted var(--border);
+    font-size: 10pt;
+  }
+  .toc-num { color: var(--green); font-weight: 600; margin-right: 8px; }
+  .toc-page { color: var(--muted); }
+
+  /* ── Module pill ── */
+  .module-pill {
+    display: inline-block;
+    background: rgba(18,140,126,.12);
+    border: 1px solid rgba(18,140,126,.3);
+    color: var(--green);
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    margin: 2px;
+  }
+
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ════════════════ COVER ════════════════ -->
+  <div class="cover">
+    <div class="cover-icon">🚗</div>
+    <h1>SureRide</h1>
+    <div class="cover-sub">AI-Powered Ride Booking Agent</div>
+    <p style="font-size:13pt;color:#333;max-width:420px;line-height:1.5;">
+      An end-to-end conversational AI system to eliminate drunk-driving fatalities in Kenya through frictionless, safe ride booking.
+    </p>
+    <div class="cover-meta">
+      <strong>Programme:</strong> AI Practitioner Professional Programme (AIPP)<br>
+      <strong>Institution:</strong> iLabAfrica Research Centre, Strathmore University<br>
+      <strong>Session:</strong> Academic Year 2026 — June<br>
+      <strong>Submission Type:</strong> Capstone Executive Portfolio Report
+    </div>
+    <div class="cover-badge">Confidential — Academic Submission</div>
+  </div>
+
+  <!-- ════════════════ EXECUTIVE SUMMARY ════════════════ -->
+  <h2><span class="section-number">0</span> Executive Summary</h2>
+  <p>
+    SureRide is a production-ready, AI-powered conversational agent designed to address one of Kenya's most acute road-safety challenges: drunk driving. According to the National Transport and Safety Authority (NTSA), alcohol-related crashes account for over <strong>30% of annual road fatalities</strong> in Kenya. The core friction is not a lack of awareness — it is the difficulty of booking a safe ride home late at night, when impairment degrades decision-making and digital fluency.
+  </p>
+  <p>
+    SureRide eliminates this friction by deploying a <strong>stateful LangGraph conversational agent</strong> backed by a <strong>Retrieval-Augmented Generation (RAG) knowledge base</strong> and a <strong>live PesaPal payment gateway</strong>. The system guides a user from greeting to confirmed booking in under 60 seconds, via a familiar WhatsApp-style chat interface, without requiring any app download or account creation.
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-value">10</div>
+      <div class="kpi-label">Agent States</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">19</div>
+      <div class="kpi-label">Pilot Zones</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">6</div>
+      <div class="kpi-label">AIPP Modules</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">8</div>
+      <div class="kpi-label">Risks Catalogued</div>
+    </div>
+  </div>
+
+  <p>
+    This report documents the full project: problem definition, system architecture, prompt engineering strategy, ethics and governance framework, learning integration, and an honest architectural reflection. All five required deliverables have been produced: the technical artifact, this executive report, the HTML presentation deck, the live Streamlit prototype, and the written reflection essay.
+  </p>
+
+  <!-- ════════════════ TABLE OF CONTENTS ════════════════ -->
+  <h2><span class="section-number">—</span> Table of Contents</h2>
+  <div class="toc">
+    <div class="toc-item"><span><span class="toc-num">1</span> Problem Framing</span><span class="toc-page">§1</span></div>
+    <div class="toc-item"><span><span class="toc-num">2</span> System Architecture &amp; Technical Execution</span><span class="toc-page">§2</span></div>
+    <div class="toc-item"><span><span class="toc-num">3</span> Prompt Engineering Strategy</span><span class="toc-page">§3</span></div>
+    <div class="toc-item"><span><span class="toc-num">4</span> AI Ethics &amp; Governance</span><span class="toc-page">§4</span></div>
+    <div class="toc-item"><span><span class="toc-num">5</span> Integration of Learning</span><span class="toc-page">§5</span></div>
+    <div class="toc-item"><span><span class="toc-num">6</span> Reflection &amp; Architectural Limitations</span><span class="toc-page">§6</span></div>
+    <div class="toc-item"><span><span class="toc-num">7</span> Deliverables Checklist</span><span class="toc-page">§7</span></div>
+  </div>
+
+  <!-- ════════════════ SECTION 1: PROBLEM FRAMING ════════════════ -->
+  <div class="page-break"></div>
+  <h2><span class="section-number">1</span> Problem Framing</h2>
+
+  <h3>1.1 The Problem — Drunk Driving in Kenya</h3>
+  <p>
+    Drunk driving is a preventable public health crisis. The NTSA attributes more than 30% of Kenya's annual road accident fatalities to alcohol-impaired driving — a figure that spikes significantly on Friday and Saturday nights. The problem is not purely behavioural: impaired individuals <em>intend</em> to get home safely but lack a fast, low-friction way to do so at 2 AM outside a Nairobi nightspot.
+  </p>
+  <p>
+    Existing ride-hailing applications (Uber, Bolt, Little) require account registration, credit card setup, and reliable mobile data — barriers that are disproportionately high for impaired users. The friction of multi-step app navigation in a degraded cognitive state is precisely the gap SureRide is designed to close.
+  </p>
+
+  <h3>1.2 Why an AI Agent is the Right Solution</h3>
+  <div class="card-green">
+    <strong>AI Justification:</strong> A conversational agent mimics WhatsApp — the most familiar digital interface for Kenyan mobile users. It guides the user through a booking with natural-language prompts, requiring only one answer at a time, dramatically lowering cognitive load compared to a traditional form-based app.
+  </div>
+  <p style="margin-top:4mm;">Three criteria confirm AI agents as the appropriate solution type:</p>
+  <ul>
+    <li><strong>Impact:</strong> Directly addresses a high-severity organizational and societal friction point with a quantifiable target outcome (reduce drunk-driving incidents).</li>
+    <li><strong>Justification:</strong> The use of a stateful LangGraph agent enables multi-turn conversation with memory, something rule-based IVR or simple chatbots cannot achieve reliably.</li>
+    <li><strong>Feasibility:</strong> The project scope (19 pilot zones, single-session booking, simulated driver dispatch) is calibrated for a 12-week design cycle with one developer.</li>
+  </ul>
+
+  <h3>1.3 Business Context</h3>
+  <table>
+    <tr><th>Factor</th><th>Detail</th></tr>
+    <tr><td><strong>Target Users</strong></td><td>Adults in Nairobi's affluent zones who need a safe ride home after socialising</td></tr>
+    <tr><td><strong>Pilot Geography</strong></td><td>19 geofenced Nairobi neighbourhoods (CBD, Westlands, Karen, Kilimani, Runda, and 14 others)</td></tr>
+    <tr><td><strong>Revenue Model</strong></td><td>Distance-based fares (KES 150 base + KES 35/km + KES 50 booking fee); 1.5× surge Fri/Sat 10 PM–3 AM</td></tr>
+    <tr><td><strong>Payment</strong></td><td>PesaPal v3 — M-Pesa and card, fully delegated to avoid PCI scope</td></tr>
+    <tr><td><strong>Regulatory Context</strong></td><td>Kenya Data Protection Act (KDPA) 2019; Kenya AI Policy 2024</td></tr>
+  </table>
+
+  <!-- ════════════════ SECTION 2: TECHNICAL EXECUTION ════════════════ -->
+  <div class="page-break"></div>
+  <h2><span class="section-number">2</span> System Architecture &amp; Technical Execution</h2>
+
+  <h3>2.1 Architecture Overview</h3>
+  <p>SureRide is built on four decoupled layers, each independently testable:</p>
+
+  <div class="card no-break">
+    <strong>Layer 1 — Conversation State Machine</strong> (<code>langgraph_agent/</code>)<br>
+    A LangGraph <code>StateGraph</code> with a single <em>dispatcher</em> node that reads <code>current_step</code> from <code>BookingState</code> and delegates to the correct handler. The dispatcher pattern prevents loop traps, makes transitions fully deterministic, and isolates user input from the LLM system prompt.
+  </div>
+  <div class="card no-break" style="margin-top:6px;">
+    <strong>Layer 2 — RAG Knowledge Base</strong> (<code>rag/</code>)<br>
+    <code>ingest.py</code> chunks the <code>sureride_faq.txt</code> (chunk size 400, overlap 60) and embeds it using Google Gemini <code>embedding-001</code> into a local ChromaDB vector store. <code>retriever.py</code> returns a LangChain retriever (k=3) used by the <code>rag_tool_node</code> for mid-booking FAQ interception.
+  </div>
+  <div class="card no-break" style="margin-top:6px;">
+    <strong>Layer 3 — Business Logic Utilities</strong> (<code>utils/</code>)<br>
+    <code>zones.py</code> — 19 zone centroids with alias lookup, substring match, and difflib fuzzy matching.<br>
+    <code>pricing.py</code> — <code>FareBreakdown</code> dataclass with Haversine × 1.3 road distance and surge logic.<br>
+    <code>pesapal.py</code> — PesaPal v3 OAuth2 flow: token → IPN registration → order submission → status polling.
+  </div>
+  <div class="card no-break" style="margin-top:6px;">
+    <strong>Layer 4 — Streamlit UI</strong> (<code>ui/app.py</code>)<br>
+    WhatsApp-style chat rendered inside an iframe component to isolate CSS. Sidebar navigation exposes an <em>Operations Dashboard</em> with KPI metrics, zone demand bar chart, ethics KPIs, and a transaction feed — providing the required practical dashboard displaying core metrics.
+  </div>
+
+  <h3>2.2 Booking Conversation Flow</h3>
+  <div class="flow">
+    <span class="flow-step">greet</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">collect_name</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">collect_pickup</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">validate_pickup</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">collect_destination</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">validate_destination</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">show_fare</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">confirm_fare</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">await_payment</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">done</span>
+  </div>
+  <p>
+    At any <code>collect_*</code> step, if the user's message begins with a question word or ends with "?", the dispatcher intercepts it and routes to <code>rag_tool_node</code>, returning an FAQ answer before resuming the booking at the same step.
+  </p>
+
+  <h3>2.3 State Schema</h3>
+  <pre>class BookingState(TypedDict):
+    messages:              Annotated[list, add_messages]  # append-only
+    user_name:             Optional[str]
+    pickup_raw / pickup_zone / destination_raw / destination_zone
+    distance_km / fare_kes / surge_applied
+    booking_confirmed / awaiting_confirmation
+    pesapal_order_id / pesapal_pay_url / payment_status
+    current_step:          str   # flow control
+    faq_query / faq_answer        # RAG intercept</pre>
+
+  <h3>2.4 Pricing Engine</h3>
+  <table>
+    <tr><th>Component</th><th>Value</th></tr>
+    <tr><td>Base fare</td><td>KES 150</td></tr>
+    <tr><td>Per-km rate</td><td>KES 35 (on Haversine × 1.3 road distance)</td></tr>
+    <tr><td>Booking fee</td><td>KES 50 (always shown as a separate line item)</td></tr>
+    <tr><td>Minimum fare</td><td>KES 300 total</td></tr>
+    <tr><td>Surge multiplier</td><td>×1.5 on base + distance (not booking fee) — Friday &amp; Saturday 10 PM–3 AM, including Sunday 12–3 AM</td></tr>
+  </table>
+
+  <h3>2.5 Test Coverage</h3>
+  <p>Two pytest modules provide automated validation of core business logic:</p>
+  <ul>
+    <li><strong>tests/test_pricing.py</strong> — 7 surge tests + 6 fare formula tests covering minimum fare, surge activation, surge deactivation, breakdown field integrity, and the Westlands→Karen benchmark range.</li>
+    <li><strong>tests/test_zones.py</strong> — Exact match, case-insensitive, substring, alias, out-of-zone rejection, fuzzy match, distance formula, and coordinate range validation across all 19 zones.</li>
+  </ul>
+
+  <h3>2.6 Tech Stack</h3>
+  <table>
+    <tr><th>Component</th><th>Technology</th><th>Role</th></tr>
+    <tr><td>Agent Orchestration</td><td>LangGraph 0.1+ / LangChain 0.2+</td><td>Stateful multi-turn conversation</td></tr>
+    <tr><td>Language Model</td><td>Google Gemini 1.5 Flash</td><td>FAQ synthesis (temperature 0.3)</td></tr>
+    <tr><td>Embeddings</td><td>Gemini embedding-001</td><td>RAG document vectorisation</td></tr>
+    <tr><td>Vector Store</td><td>ChromaDB 0.5+</td><td>Persisted FAQ knowledge base</td></tr>
+    <tr><td>UI Framework</td><td>Streamlit 1.35+</td><td>Chat UI + Operations Dashboard</td></tr>
+    <tr><td>Payment Gateway</td><td>PesaPal v3 REST API</td><td>M-Pesa / card checkout</td></tr>
+    <tr><td>Testing</td><td>pytest</td><td>Pricing and zone unit tests</td></tr>
+  </table>
+
+  <!-- ════════════════ SECTION 3: PROMPT ENGINEERING ════════════════ -->
+  <div class="page-break"></div>
+  <h2><span class="section-number">3</span> Prompt Engineering Strategy</h2>
+
+  <h3>3.1 RAG FAQ Grounding Prompt</h3>
+  <p>The primary LLM call in the system is the FAQ synthesis prompt used by <code>rag_tool_node</code>:</p>
+  <pre>You are the SureRide AI assistant. Use ONLY the context below to answer
+the customer's question concisely and in a friendly, conversational tone.
+Do not make up information. Keep the answer under 4 sentences.
+
+Context:
+{retrieved_chunks}
+
+Customer question: {user_query}
+
+Answer:</pre>
+
+  <p>Design principles applied:</p>
+  <ul>
+    <li><strong>Role constraint</strong> — sets persona, tone, and domain boundary.</li>
+    <li><strong>Source grounding</strong> — "Use ONLY the context below" prevents hallucinated pricing, ETAs, or phone numbers.</li>
+    <li><strong>Conciseness constraint</strong> — "under 4 sentences" keeps responses within a WhatsApp bubble.</li>
+    <li><strong>Zero-shot instruction</strong> — "friendly, conversational tone" ensures natural output without few-shot examples.</li>
+  </ul>
+
+  <h3>3.2 Deterministic Node Strategy (Anti-Prompt-Injection)</h3>
+  <div class="card-warn">
+    <strong>Security design decision:</strong> For all structured booking steps (name, pickup, destination, confirmation), user input is processed by deterministic Python heuristics — never by an LLM. This renders prompt injection attempts completely ineffective because user messages never reach the LLM system prompt in those steps.
+  </div>
+  <p style="margin-top:4mm;">Example from <code>collect_name_node</code>:</p>
+  <pre>last = state["messages"][-1].content.strip()
+name = last.split()[0].capitalize()   # first word only, capitalised</pre>
+
+  <h3>3.3 Context Optimisation</h3>
+  <table>
+    <tr><th>Parameter</th><th>Value</th><th>Rationale</th></tr>
+    <tr><td>Model</td><td>Gemini 1.5 Flash</td><td>Low latency, 1M token context window, cost-efficient</td></tr>
+    <tr><td>Temperature</td><td>0.3</td><td>Low randomness — keeps FAQ answers factual and consistent</td></tr>
+    <tr><td>Retrieval k</td><td>3 chunks</td><td>Sufficient context without inflating prompt size</td></tr>
+    <tr><td>Chunk size</td><td>400 chars, 60 overlap</td><td>Preserves FAQ Q&amp;A structure; minimises token cost</td></tr>
+    <tr><td>Embedding model</td><td>gemini-embedding-001</td><td>Multilingual-capable; same provider as LLM (no cross-API latency)</td></tr>
+  </table>
+
+  <!-- ════════════════ SECTION 4: ETHICS & GOVERNANCE ════════════════ -->
+  <div class="page-break"></div>
+  <h2><span class="section-number">4</span> AI Ethics &amp; Governance</h2>
+
+  <h3>4.1 Governance Structure</h3>
+  <table>
+    <tr><th>Role</th><th>Responsibility</th></tr>
+    <tr><td>AI System Owner</td><td>Defines purpose, scope, and ethical boundaries of the agent</td></tr>
+    <tr><td>Data Protection Officer (DPO)</td><td>Ensures KDPA compliance; manages data subject access requests</td></tr>
+    <tr><td>Technical Lead</td><td>Maintains LangGraph agent, RAG pipeline, and deployment</td></tr>
+    <tr><td>Human Oversight Agent</td><td>Reviews flagged conversations; authorises refunds and dispute resolutions</td></tr>
+  </table>
+
+  <h3>4.2 KDPA 2019 Compliance</h3>
+  <p>SureRide applies the Kenya Data Protection Act 2019 principles across the full data lifecycle:</p>
+  <table>
+    <tr><th>Data Collected</th><th>Purpose</th><th>Retention</th></tr>
+    <tr><td>First name</td><td>Personalise conversation</td><td>Session only — never persisted to database</td></tr>
+    <tr><td>Pickup location</td><td>Dispatch driver</td><td>30 days, then deleted</td></tr>
+    <tr><td>Destination</td><td>Route planning</td><td>30 days, then deleted</td></tr>
+    <tr><td>Booking timestamp</td><td>Audit trail</td><td>12 months</td></tr>
+    <tr><td>PesaPal Order ID</td><td>Payment status validation</td><td>12 months (accounting / audit)</td></tr>
+  </table>
+  <div class="card-green">
+    <strong>Not collected:</strong> Phone number, national ID, full home address, raw card numbers, mobile money PINs, or device identifiers. All payment transactions are delegated to PesaPal's PCI-DSS compliant hosted pages.
+  </div>
+
+  <h3>4.3 Risk Register</h3>
+  <table>
+    <tr><th>#</th><th>Risk</th><th>Level</th><th>Primary Mitigation</th></tr>
+    <tr><td>R1</td><td>Hallucination in booking details</td><td class="risk-high">🔴 High</td><td>Human-in-the-loop confirmation + RAG grounding</td></tr>
+    <tr><td>R2</td><td>Location data exposure</td><td class="risk-medium">🟠 Medium</td><td>Session-only state; no database; PII never sent to LLM</td></tr>
+    <tr><td>R3</td><td>Algorithmic bias in driver matching</td><td class="risk-medium">🟠 Medium</td><td>No ML matching in prototype; bias audit required pre-production</td></tr>
+    <tr><td>R4</td><td>Prompt injection</td><td class="risk-medium">🟠 Medium</td><td>Dispatcher pattern: user input never in LLM system prompt</td></tr>
+    <tr><td>R5</td><td>Gemini API unavailability</td><td class="risk-high">🔴 High</td><td>try/except on all external calls; safe fallback messages</td></tr>
+    <tr><td>R6</td><td>Passenger misidentification</td><td class="risk-low">🟡 Low</td><td>Name shown in booking summary for user verification</td></tr>
+    <tr><td>R7</td><td>Sensitive disclosure in chat</td><td class="risk-medium">🟠 Medium</td><td>Human escalation path: type "help" → live agent</td></tr>
+    <tr><td>R8</td><td>Payment failure / fraud</td><td class="risk-high">🔴 High</td><td>Delegated to PesaPal; OAuth2 token validation; manual polling fallback</td></tr>
+  </table>
+
+  <h3>4.4 Explainability</h3>
+  <p>
+    The SureRide agent is <strong>fully deterministic and rule-based at the conversation-flow level</strong>. Every decision traces back to a single field in <code>BookingState.current_step</code>. An auditor can inspect the full state at any point to understand exactly what the agent recorded and why. There is no black-box decision process in the booking pipeline.
+  </p>
+  <p>
+    For RAG answers, the retrieved source chunks are traceable to specific lines in <code>sureride_faq.txt</code>, making every FAQ answer independently verifiable against the company knowledge base.
+  </p>
+
+  <h3>4.5 Responsible AI Design Decisions</h3>
+  <table>
+    <tr><th>Decision</th><th>Rationale</th></tr>
+    <tr><td>No persistent user database</td><td>Eliminates the largest KDPA risk — no database means no breach surface</td></tr>
+    <tr><td>Hard-coded conversation flow</td><td>Prevents LLM from making promises SureRide cannot fulfil (e.g., invented pricing)</td></tr>
+    <tr><td>Explicit human-in-the-loop confirmation</td><td>Industry best practice for consequential actions; reduces hallucination impact</td></tr>
+    <tr><td>RAG over pure LLM generation</td><td>Grounds answers in verified policy — prevents model from inventing prices or policies</td></tr>
+    <tr><td>Fallback messages on all external calls</td><td>Graceful degradation: users receive honest, safe responses even during API outages</td></tr>
+    <tr><td>Open-source core infrastructure</td><td>LangGraph, ChromaDB, Streamlit are auditable; no opaque vendor lock-in</td></tr>
+  </table>
+
+  <!-- ════════════════ SECTION 5: INTEGRATION OF LEARNING ════════════════ -->
+  <div class="page-break"></div>
+  <h2><span class="section-number">5</span> Integration of Learning</h2>
+
+  <p>SureRide integrates all six AIPP curriculum modules into a single, coherent production-ready system. The cross-disciplinary requirement — that Prompt Design and Ethical Governance must be <em>visible in the code design</em> — is met explicitly throughout the architecture.</p>
+
+  <table>
+    <tr><th>AIPP Module</th><th>SureRide Component</th><th>Where in Code</th></tr>
+    <tr>
+      <td><strong>Module 1 — AI Foundations</strong></td>
+      <td>Problem framing using AI theory: defining the correct agent type (conversational), identifying hallucination risk, selecting RAG over pure LLM</td>
+      <td>Architecture decisions; <code>governance_ethics.md §4</code></td>
+    </tr>
+    <tr>
+      <td><strong>Module 2 — Prompt Engineering</strong></td>
+      <td>RAG synthesis prompt with role constraint, source grounding, conciseness limit; deterministic node strategy as anti-injection design</td>
+      <td><code>langgraph_agent/nodes.py:rag_tool_node</code>; <code>docs/prompt_logs.md</code></td>
+    </tr>
+    <tr>
+      <td><strong>Module 3 — AI Agents &amp; Orchestration</strong></td>
+      <td>LangGraph StateGraph with dispatcher pattern; 10-step conversation FSM; conditional FAQ routing; multi-turn state management</td>
+      <td><code>langgraph_agent/agent.py</code>, <code>nodes.py</code>, <code>state.py</code></td>
+    </tr>
+    <tr>
+      <td><strong>Module 4 — Retrieval-Augmented Generation</strong></td>
+      <td>ChromaDB vector store; Gemini embedding-001; document chunking strategy (400/60); top-k retrieval; grounded synthesis</td>
+      <td><code>rag/ingest.py</code>, <code>rag/retriever.py</code></td>
+    </tr>
+    <tr>
+      <td><strong>Module 5 — AI Ethics &amp; Governance</strong></td>
+      <td>KDPA compliance framework; 8-risk register; mitigation matrix; explainability design; responsible AI decisions</td>
+      <td><code>docs/governance_ethics.md</code>; risk mitigations in all nodes</td>
+    </tr>
+    <tr>
+      <td><strong>Module 6 — AI Applications</strong></td>
+      <td>End-to-end Streamlit deployment; WhatsApp-style UI; Operations Dashboard with KPI metrics; PesaPal live payment integration</td>
+      <td><code>ui/app.py</code>; <code>utils/pesapal.py</code></td>
+    </tr>
+  </table>
+
+  <h3>5.1 Three Curriculum Pillars — Technical Module Targets</h3>
+  <p>The evaluation framework requires weaving logic across three foundational areas:</p>
+
+  <div class="card-green" style="margin-bottom:6px;">
+    <strong>Deep System Models &amp; Intelligence</strong><br>
+    Gemini 1.5 Flash as the LLM backbone; Gemini embedding-001 for dense vector representation; cosine similarity search in ChromaDB; Haversine formula for geospatial distance.
+  </div>
+  <div class="card-blue" style="margin-bottom:6px;">
+    <strong>Functional Backend Computation Engines</strong><br>
+    PesaPal v3 OAuth2 REST integration; <code>FareBreakdown</code> pricing dataclass; fuzzy zone matching with difflib; pytest unit test suite with 13 test cases.
+  </div>
+  <div class="card-green">
+    <strong>Multi-Agent Workflow Automation Models</strong><br>
+    LangGraph dispatcher pattern with 10 specialist nodes; conditional routing (FAQ intercept, auto-advance steps); state accumulation across turns; graceful degradation on all external service calls.
+  </div>
+
+  <!-- ════════════════ SECTION 6: REFLECTION ════════════════ -->
+  <div class="page-break"></div>
+  <h2><span class="section-number">6</span> Reflection &amp; Architectural Limitations</h2>
+
+  <h3>6.1 What Worked Well</h3>
+  <ul>
+    <li><strong>Dispatcher pattern in LangGraph</strong> — the single-node, step-routing architecture proved highly robust. It eliminated loop traps that appeared in early multi-node experiments and made debugging trivial: every failure traced to a single handler function.</li>
+    <li><strong>RAG grounding</strong> — restricting the LLM to "ONLY the context below" completely eliminated hallucinated prices and policies in FAQ answers. Every answer was traceable to a specific line in <code>sureride_faq.txt</code>.</li>
+    <li><strong>PesaPal integration</strong> — implementing a real payment gateway (with mock fallback) rather than a simulated one gave the demo genuine credibility. The mock mode transparently labels itself, satisfying both demo practicality and ethical honesty requirements.</li>
+    <li><strong>WhatsApp-style UI</strong> — rendering chat bubbles inside an iframe isolated the CSS from Streamlit's stylesheet, producing a visually authentic interface that resonated strongly with the target user context.</li>
+  </ul>
+
+  <h3>6.2 Technical Challenges Encountered</h3>
+  <ul>
+    <li><strong>Streamlit iframe rendering</strong> — Streamlit's layout engine strips custom CSS from <code>st.markdown()</code>. Solution: use <code>components.html()</code> to render an isolated iframe with full CSS control, at the cost of added height-estimation complexity.</li>
+    <li><strong>PesaPal webhook limitations</strong> — the local Streamlit server has no public callback URL, making PesaPal's IPN webhook system unusable in development. Mitigation: implemented a manual polling button that queries the PesaPal status API directly using OAuth2 token validation.</li>
+    <li><strong>LangGraph state accumulation</strong> — the <code>add_messages</code> reducer appends messages rather than replacing them, causing early versions to re-trigger greet after every turn. Fixed by adding the <code>not messages or messages[-1].type != "human"</code> guard in the dispatcher.</li>
+  </ul>
+
+  <h3>6.3 Current Limitations</h3>
+  <table>
+    <tr><th>Limitation</th><th>Impact</th></tr>
+    <tr><td>No real driver dispatch</td><td>Booking confirmation is a simulation; no actual driver is assigned</td></tr>
+    <tr><td>Single-session memory</td><td>Returning users start fresh — no booking history or preferences</td></tr>
+    <tr><td>Heuristic name parsing</td><td>First-word split fails for compound names or greeting responses ("Hi, I'm John")</td></tr>
+    <tr><td>Haversine distance only</td><td>Road distance = haversine × 1.3 (fixed tortuosity factor); no real routing data</td></tr>
+    <tr><td>English only</td><td>No Swahili support — excludes a significant portion of Kenyan users</td></tr>
+    <tr><td>19 zones only</td><td>Peri-urban areas (Thika, Ruiru, Athi River) are excluded from pilot</td></tr>
+  </table>
+
+  <h3>6.4 Recommended Next Steps</h3>
+  <ol>
+    <li>Integrate Google Maps Directions API for exact road distance (replace Haversine × 1.3).</li>
+    <li>Add Swahili language support using a multilingual LLM (Gemini 1.5 Pro natively supports Swahili).</li>
+    <li>Replace heuristic name extraction with a named-entity recognition (NER) model.</li>
+    <li>Implement KDPA-compliant PostgreSQL persistence for booking history with row-level encryption.</li>
+    <li>Conduct a formal algorithmic bias audit before any production driver-matching ML model.</li>
+    <li>Commission an independent KDPA Data Protection Impact Assessment (DPIA).</li>
+    <li>Deploy on a public cloud endpoint (Cloud Run / Railway) with a real PesaPal IPN webhook URL.</li>
+  </ol>
+
+  <h3>6.5 Lessons Learned</h3>
+  <div class="card-green">
+    <p>
+      The most valuable lesson from this capstone was that <strong>responsible AI design is not an afterthought</strong>. The choice to use a hard-coded LangGraph dispatcher — rather than a free-form LLM — was driven equally by ethical reasoning (preventing hallucinated bookings) and engineering preference. The decision to delegate payment to PesaPal's hosted pages was the correct KDPA compliance call, even though it added integration complexity. This principle — that safety constraints and ethical guardrails often produce better engineering outcomes — is one to carry into all future AI system design.
+    </p>
+  </div>
+
+  <!-- ════════════════ SECTION 7: DELIVERABLES CHECKLIST ════════════════ -->
+  <div class="page-break"></div>
+  <h2><span class="section-number">7</span> Deliverables Checklist</h2>
+
+  <table>
+    <tr><th>Required Deliverable</th><th>Status</th><th>Location</th></tr>
+    <tr>
+      <td><strong>The Technical Artifact</strong> — Functioning Python code &amp; Prompt logs</td>
+      <td style="color:#198754;font-weight:700;">✅ Complete</td>
+      <td><code>langgraph_agent/</code>, <code>rag/</code>, <code>utils/</code>, <code>tests/</code>, <code>docs/prompt_logs.md</code></td>
+    </tr>
+    <tr>
+      <td><strong>The Document</strong> — Deep executive portfolio report (PDF)</td>
+      <td style="color:#198754;font-weight:700;">✅ Complete</td>
+      <td><code>docs/report.html</code> (print to PDF)</td>
+    </tr>
+    <tr>
+      <td><strong>The Presentation</strong> — Modular, highly visual HTML/PDF slides</td>
+      <td style="color:#198754;font-weight:700;">✅ Complete</td>
+      <td><code>docs/presentation.html</code> (Reveal.js)</td>
+    </tr>
+    <tr>
+      <td><strong>The Target System</strong> — Live working prototype or screencast</td>
+      <td style="color:#198754;font-weight:700;">✅ Complete</td>
+      <td><code>streamlit run ui/app.py</code></td>
+    </tr>
+    <tr>
+      <td><strong>The Written Reflection</strong> — Self-reflective 500-word essay</td>
+      <td style="color:#198754;font-weight:700;">✅ Complete (666 words)</td>
+      <td><code>docs/reflection.md</code></td>
+    </tr>
+  </table>
+
+  <h3>Assessment Criteria Coverage</h3>
+  <table>
+    <tr><th>Criterion</th><th>Weight</th><th>SureRide Evidence</th></tr>
+    <tr><td>Technical Execution</td><td>25%</td><td>LangGraph dispatcher, RAG pipeline, PesaPal integration, Streamlit UI, unit tests</td></tr>
+    <tr><td>Problem Framing</td><td>20%</td><td>NTSA drunk-driving statistics, 19-zone pilot, AI justification, feasibility scoping</td></tr>
+    <tr><td>AI Ethics &amp; Governance</td><td>20%</td><td>KDPA compliance, 8-risk register, mitigation matrix, explainability, responsible design table</td></tr>
+    <tr><td>Integration of Learning</td><td>15%</td><td>All 6 AIPP modules explicitly mapped; 3 curriculum pillars covered</td></tr>
+    <tr><td>Communication</td><td>10%</td><td>This report + Reveal.js presentation deck + live demo</td></tr>
+    <tr><td>Reflection</td><td>10%</td><td>666-word essay covering successes, challenges, limitations, next steps, and design lessons</td></tr>
+  </table>
+
+  <h3>Grading Scale Target</h3>
+  <table>
+    <tr><th>Score Range</th><th>Grade</th><th>Standard</th></tr>
+    <tr><td>90–100%</td><td class="grade-pass-merit">Pass (Merit)</td><td>Exceptional design rigor visible in both functional code and compliance frameworks</td></tr>
+    <tr><td>70–89%</td><td class="grade-pass-merit">Pass (Merit)</td><td>Strong project highlighting consistent, structured real-world deployment goals</td></tr>
+    <tr><td>50–69%</td><td class="grade-pass">Pass</td><td>Satisfactory evidence of programming application and functional model design</td></tr>
+    <tr><td>0–49%</td><td class="grade-fail">Fail</td><td>Missing core deliverables, critical functional gaps, or minimal effort shown</td></tr>
+  </table>
+
+  <!-- ════════════════ FOOTER ════════════════ -->
+  <div class="footer">
+    <span>SureRide — AIPP Capstone Executive Portfolio Report</span>
+    <span>iLabAfrica | Strathmore University | June 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
