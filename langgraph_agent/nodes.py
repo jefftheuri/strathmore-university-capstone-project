@@ -11,6 +11,7 @@ Booking flow:
   (+ rag_tool_node can intercept at collect_pickup / collect_destination)
 """
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import AIMessage
@@ -20,7 +21,8 @@ from utils.zones import find_zone, road_distance_km, zone_list_text, ZONE_NAMES
 from utils.pricing import calculate_fare
 from utils.pesapal import submit_order, check_payment_status
 
-load_dotenv()
+# Always load .env from the project root regardless of CWD
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-lite", temperature=0.3)
 

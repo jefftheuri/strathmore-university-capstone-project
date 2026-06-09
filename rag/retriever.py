@@ -5,11 +5,13 @@ Returns a LangChain retriever backed by the ChromaDB vector store.
 The retriever is used by the rag_tool node in the booking agent.
 """
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
 
-load_dotenv()
+# Always load .env from project root regardless of CWD
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 CHROMA_PATH = os.path.join(os.path.dirname(__file__), "..", "chroma_db")
 COLLECTION_NAME = "sureride_faq"
