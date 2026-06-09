@@ -22,7 +22,7 @@ from utils.pesapal import submit_order, check_payment_status
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.3)
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-lite", temperature=0.3)
 
 # ── Formatting helpers ────────────────────────────────────────────────────────
 
