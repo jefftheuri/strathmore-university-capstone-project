@@ -16,14 +16,15 @@ st.set_page_config(
     page_title="SureRide",
     page_icon="🚗",
     layout="centered",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 # ── Sidebar Navigation ────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🗺️ Navigation")
-    view = st.selectbox(
-        "Select Screen",
+    st.markdown("## 🚗 SureRide")
+    st.caption("Nairobi Night Rides · Pilot Mode")
+    view = st.radio(
+        "**Navigate**",
         ["💬 Ride Booking Chat", "📊 Operations Dashboard"],
         index=0
     )
