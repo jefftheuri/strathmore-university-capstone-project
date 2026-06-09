@@ -139,12 +139,123 @@ section[data-testid="stSidebar"] .stMarkdown { color: #333 !important; }
     color: #111 !important;
 }
 
-/* Constrain chat tab width */
-[data-testid="stTabsContent"]:first-child {
-    max-width: 560px;
+/* ── Phone frame for chat tab ── */
+.phone-scene {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px 0 20px;
+    min-height: 820px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-radius: 16px;
     margin: 0 auto;
+}
+.phone-frame {
+    position: relative;
+    width: 390px;
+    min-height: 760px;
     background: #efeae2;
-    border-radius: 12px;
+    border-radius: 50px;
+    box-shadow:
+        0 0 0 2px #333,
+        0 0 0 6px #555,
+        0 0 0 8px #222,
+        0 50px 100px rgba(0,0,0,0.7);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+/* Notch */
+.phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 130px; height: 30px;
+    background: #111;
+    border-radius: 0 0 22px 22px;
+    z-index: 100;
+}
+/* Side buttons */
+.phone-frame::after {
+    content: '';
+    position: absolute;
+    top: 100px; right: -10px;
+    width: 4px; height: 60px;
+    background: #444;
+    border-radius: 2px;
+    box-shadow: 0 80px 0 #444;
+}
+.phone-vol-btn {
+    position: absolute;
+    top: 120px; left: -6px;
+    width: 4px; height: 40px;
+    background: #444;
+    border-radius: 2px;
+    box-shadow: 0 56px 0 #444, 0 104px 0 #444;
+    z-index: 10;
+}
+.phone-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 44px;
+}
+.phone-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 38px 22px 4px;
+    background: #008069;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+    font-family: -apple-system, sans-serif;
+    flex-shrink: 0;
+}
+.phone-chat-area {
+    flex: 1;
+    overflow-y: auto;
+    background: #efeae2;
+}
+.phone-input-bar {
+    background: #f0f2f5;
+    border-top: 1px solid #e9edef;
+    padding: 8px 12px;
+    flex-shrink: 0;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.phone-input-bar input {
+    flex: 1;
+    background: white;
+    border: none;
+    border-radius: 22px;
+    padding: 9px 16px;
+    font-size: 15px;
+    outline: none;
+    color: #333;
+}
+.phone-input-bar .mic-btn {
+    width: 40px; height: 40px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer; border: none;
+    box-shadow: 0 2px 8px rgba(37,211,102,0.4);
+}
+
+/* Constrain Streamlit content to phone width */
+[data-testid="stTabsContent"]:first-child {
+    padding: 0 !important;
+    max-width: 100% !important;
+    background: transparent !important;
+}
+[data-testid="stTabsContent"]:first-child .stChatInput {
+    max-width: 366px;
+    border-radius: 22px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -254,8 +365,11 @@ em  { font-style: italic; color: #555; }
 a   { color: #128C7E; font-weight: 600; }
 """
 
-def _build_chat_html(messages: list) -> str:
+def _build_phone_html(messages: list) -> str:
+    """Build a complete phone-frame WhatsApp UI as a self-contained HTML document."""
     date_str = datetime.now().strftime("%A, %d %B %Y")
+    now_str  = datetime.now().strftime("%H:%M")
+
     bubbles = ""
     for msg in messages:
         html_text = md_to_html(msg["text"])
@@ -265,9 +379,7 @@ def _build_chat_html(messages: list) -> str:
 <div class="msg-row msg-row-bot">
   <div class="bubble bubble-bot">
     <span class="msg-text">{html_text}</span>
-    <div class="msg-meta">
-      <span class="msg-time">{ts}</span>
-    </div>
+    <div class="msg-meta"><span class="msg-time">{ts}</span></div>
   </div>
 </div>"""
         else:
@@ -284,25 +396,239 @@ def _build_chat_html(messages: list) -> str:
 
     return f"""<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8">
-<style>{_CHAT_CSS}</style>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+* {{ margin:0; padding:0; box-sizing:border-box; }}
+html, body {{
+  font-family: -apple-system,'Segoe UI','Inter',sans-serif;
+  background: linear-gradient(145deg,#0f0c29,#302b63,#24243e);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 0 16px;
+}}
+
+/* Phone shell */
+.phone {{
+  position: relative;
+  width: 370px;
+  background: #efeae2;
+  border-radius: 48px;
+  box-shadow:
+    0 0 0 2px #2a2a2a,
+    0 0 0 5px #555,
+    0 0 0 7px #1a1a1a,
+    0 40px 80px rgba(0,0,0,.75);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 720px;
+}}
+/* Notch */
+.phone::before {{
+  content: '';
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 28px;
+  background: #111;
+  border-radius: 0 0 20px 20px;
+  z-index: 50;
+}}
+/* Power button (right) */
+.phone::after {{
+  content: '';
+  position: absolute;
+  top: 110px; right: -6px;
+  width: 4px; height: 55px;
+  background: #3a3a3a;
+  border-radius: 2px;
+}}
+/* Volume buttons (left) */
+.vol-btns {{
+  position: absolute;
+  top: 100px; left: -6px;
+  display: flex; flex-direction: column; gap: 12px;
+  z-index: 10;
+}}
+.vol-btns span {{
+  display: block;
+  width: 4px; height: 34px;
+  background: #3a3a3a;
+  border-radius: 2px;
+}}
+
+/* Status bar */
+.status-bar {{
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 32px 18px 2px;
+  background: #008069;
+  font-size: 11px; font-weight: 700; color: white;
+  flex-shrink: 0;
+}}
+.status-right {{ display: flex; gap: 6px; align-items: center; }}
+
+/* WhatsApp header */
+.wa-header {{
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 12px 10px;
+  background: #008069;
+  flex-shrink: 0;
+}}
+.avatar {{
+  width: 38px; height: 38px; border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px; flex-shrink: 0;
+}}
+.wa-info {{ flex: 1; }}
+.wa-name   {{ font-size: 15px; font-weight: 600; color: white; }}
+.wa-status {{ font-size: 11px; color: #b2dfdb; margin-top: 1px; }}
+.wa-icons  {{ display: flex; gap: 16px; color: white; font-size: 19px; }}
+
+/* Chat area */
+.chat-area {{
+  flex: 1;
+  overflow-y: auto;
+  background: #efeae2;
+  padding: 6px 8px 4px;
+}}
+.day-chip {{ text-align: center; margin: 6px 0 10px; }}
+.day-chip span {{
+  background: rgba(255,255,255,.78);
+  color: #54656f; font-size: 11.5px;
+  padding: 3px 10px; border-radius: 7px;
+  box-shadow: 0 1px 1px rgba(0,0,0,.08);
+}}
+
+/* Message rows */
+.msg-row {{ display: flex; margin: 2px 0 1px; align-items: flex-end; }}
+.msg-row-bot  {{ justify-content: flex-start; padding-right: 55px; }}
+.msg-row-user {{ justify-content: flex-end;   padding-left:  55px; }}
+
+/* Bubbles */
+.bubble {{
+  position: relative;
+  max-width: 100%;
+  padding: 6px 7px 8px 9px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #111;
+  word-break: break-word;
+}}
+.bubble-bot {{
+  background: #ffffff;
+  border-radius: 0 7.5px 7.5px 7.5px;
+  box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
+}}
+.bubble-user {{
+  background: #d9fdd3;
+  border-radius: 7.5px 0 7.5px 7.5px;
+  box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
+}}
+.bubble-bot::before {{
+  content: '';
+  position: absolute;
+  top: 0; left: -8px;
+  border-top: 8px solid #ffffff;
+  border-left: 8px solid transparent;
+}}
+.bubble-user::before {{
+  content: '';
+  position: absolute;
+  top: 0; right: -8px;
+  border-top: 8px solid #d9fdd3;
+  border-right: 8px solid transparent;
+}}
+.msg-meta {{
+  display: flex; justify-content: flex-end;
+  align-items: center; gap: 3px;
+  margin-top: 2px; height: 14px;
+}}
+.msg-time {{ font-size: 10.5px; color: #667781; }}
+.tick {{ font-size: 13px; color: #53bdeb; }}
+b   {{ font-weight: 600; }}
+em  {{ font-style: italic; color: #555; }}
+a   {{ color: #128C7E; font-weight: 600; }}
+
+/* Input bar */
+.input-bar {{
+  display: flex; align-items: center; gap: 8px;
+  background: #f0f2f5;
+  border-top: 1px solid #e9edef;
+  padding: 7px 10px;
+  flex-shrink: 0;
+}}
+.input-field {{
+  flex: 1;
+  background: white;
+  border: none;
+  border-radius: 22px;
+  padding: 8px 14px;
+  font-size: 14px;
+  color: #aaa;
+  font-family: inherit;
+  cursor: default;
+}}
+.send-btn {{
+  width: 38px; height: 38px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  box-shadow: 0 2px 6px rgba(37,211,102,.4);
+  flex-shrink: 0;
+}}
+</style></head>
 <body>
-<div class="chat-wrap">
-  <div class="day-chip"><span>{date_str}</span></div>
-  {bubbles}
+<div class="phone">
+  <div class="vol-btns"><span></span><span></span></div>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span>{now_str}</span>
+    <div class="status-right">
+      <span>&#9679;&#9679;&#9679;&#9679;</span>
+      <span>5G</span>
+      <span>&#128267; 87%</span>
+    </div>
+  </div>
+
+  <!-- WhatsApp header -->
+  <div class="wa-header">
+    <span style="color:white;font-size:20px;">&#8592;</span>
+    <div class="avatar">&#x1F697;</div>
+    <div class="wa-info">
+      <div class="wa-name">SureRide</div>
+      <div class="wa-status">&#x1F7E2; online</div>
+    </div>
+    <div class="wa-icons">
+      <span>&#x1F4F9;</span>
+      <span>&#x1F4DE;</span>
+      <span>&#8942;</span>
+    </div>
+  </div>
+
+  <!-- Chat messages -->
+  <div class="chat-area" id="chat">
+    <div class="day-chip"><span>{date_str}</span></div>
+    {bubbles}
+  </div>
+
+  <!-- Input bar (display only — actual input is Streamlit widget below) -->
+  <div class="input-bar">
+    <div class="input-field">Type a message…</div>
+    <div class="send-btn">&#x1F3A4;</div>
+  </div>
 </div>
-<script>window.scrollTo(0,document.body.scrollHeight);</script>
-</body>
-</html>"""
+<script>var c=document.getElementById('chat');c.scrollTop=c.scrollHeight;</script>
+</body></html>"""
 
 
 def render_chat(messages: list):
-    if not messages:
-        return
-    # Estimate height: ~90px per message, min 200, max 700
-    h = min(max(len(messages) * 88, 160), 700)
-    components.html(_build_chat_html(messages), height=h, scrolling=True)
+    # Height: phone frame + some breathing room
+    h = min(max(len(messages) * 72 + 380, 580), 900)
+    components.html(_build_phone_html(messages), height=h, scrolling=False)
 
 
 # ── Card renderers ────────────────────────────────────────────────────────────
@@ -433,63 +759,21 @@ init_session()
 tab1, tab2 = st.tabs(["💬 Ride Booking Chat", "📊 Operations Dashboard"])
 
 with tab1:
-    # ── WhatsApp header ──────────────────────────────────────────────────────
-    components.html("""
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-* { margin:0; padding:0; box-sizing:border-box;
-    font-family: -apple-system,'Segoe UI','Inter',sans-serif; }
-body { background: #008069; }
-.header {
-    display: flex; align-items: center; gap: 14px;
-    padding: 10px 14px; background: #008069;
-}
-.back { color: white; font-size: 22px; cursor: pointer; margin-right: -4px; }
-.avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: #25D366; display: flex;
-    align-items: center; justify-content: center; font-size: 20px;
-    flex-shrink: 0;
-}
-.info { flex: 1; }
-.name   { font-size: 16px; font-weight: 600; color: white; }
-.status { font-size: 12px; color: #b2dfdb; margin-top: 1px; }
-.icons  { display: flex; gap: 18px; color: white; font-size: 20px; }
-</style>
-</head>
-<body>
-<div class="header">
-  <div class="back">←</div>
-  <div class="avatar">🚗</div>
-  <div class="info">
-    <div class="name">SureRide</div>
-    <div class="status">🟢 online</div>
-  </div>
-  <div class="icons">
-    <span title="Video call">📹</span>
-    <span title="Call">📞</span>
-    <span title="More">⋮</span>
-  </div>
-</div>
-</body>
-</html>
-""", height=62)
-
-    # ── Opening greeting ──────────────────────────────────────────────────────
+    # ── Opening greeting ─────────────────────────────────────────────────────
     if not st.session_state.started:
         reply, st.session_state.agent_state = run_turn(st.session_state.agent_state)
         st.session_state.messages.append({"role": "bot", "text": reply, "time": now_time()})
         st.session_state.started = True
 
-    # ── Render all chat messages ──────────────────────────────────────────────
-    render_chat(st.session_state.messages)
-
     astate = st.session_state.agent_state
     step   = astate.get("current_step", "greet")
 
-    # ── Step-specific UI ──────────────────────────────────────────────────────
+    # ── Phone frame (single components.html with everything inside) ───────────
+    render_chat(st.session_state.messages)
+
+    # ── Interactive widgets below the phone (centered to phone width) ────────
+    st.markdown('<div style="max-width:390px;margin:0 auto;padding:0 8px;">', unsafe_allow_html=True)
+
     if step == "await_payment":
         render_fare_card(astate)
         render_payment_card(astate)
@@ -535,6 +819,8 @@ body { background: #008069; }
             reply, st.session_state.agent_state = run_turn(st.session_state.agent_state, user_input)
             st.session_state.messages.append({"role": "bot", "text": reply, "time": now_time()})
             st.rerun()
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with tab2:
     # ── Operations Dashboard view ─────────────────────────────────────────────
