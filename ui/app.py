@@ -15,70 +15,32 @@ from langgraph_agent.agent import run_turn, new_state
 st.set_page_config(
     page_title="SureRide",
     page_icon="🚗",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ── Sidebar Navigation ────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("## 🚗 SureRide")
-    st.caption("Nairobi Night Rides · Pilot Mode")
-    view = st.radio(
-        "**Navigate**",
-        ["💬 Ride Booking Chat", "📊 Operations Dashboard"],
-        index=0
-    )
-    st.divider()
+# view will be set via tabs — define a placeholder so CSS injection below works
+view = ""  # resolved after tabs are created
 
-# ── Global page CSS ───────────────────────────────────────────────────────────
-if view == "💬 Ride Booking Chat":
-    st.markdown("""
+# ── Global page CSS (always injected — covers both tab views) ─────────────────
+st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 * { font-family: 'Inter', sans-serif !important; }
-body, .stApp, [data-testid="stAppViewContainer"], .main,
-[data-testid="stMain"], [data-testid="stMainBlockContainer"],
-.block-container { background: #efeae2 !important; }
 #MainMenu, header, footer, [data-testid="stToolbar"],
 [data-testid="stDecoration"] { display: none !important; }
-.block-container {
-    padding: 0 !important;
-    max-width: 540px !important;
-}
-/* Chat input at bottom */
-[data-testid="stBottom"] {
-    background: #f0f2f5 !important;
-    border-top: 1px solid #e9edef !important;
-    padding: 8px 12px !important;
-}
-[data-testid="stChatInput"] textarea {
-    background: #ffffff !important;
-    border-radius: 24px !important;
-    border: none !important;
+
+/* ── Tab styles ── */
+[data-testid="stTabs"] [data-testid="stTab"] {
     font-size: 15px !important;
-    padding: 10px 18px !important;
-    color: #111 !important;
-}
-/* Buttons */
-.stButton > button {
-    border-radius: 24px !important;
     font-weight: 600 !important;
-    padding: 10px 22px !important;
-    font-size: 14px !important;
-    transition: all .15s !important;
-    border: none !important;
+    padding: 10px 20px !important;
 }
-/* Action button row */
-div[data-testid="column"]:first-child .stButton > button {
-    background: #25d366 !important; color: white !important;
-    box-shadow: 0 2px 8px rgba(37,211,102,.4) !important;
-}
-div[data-testid="column"]:last-child .stButton > button {
-    background: #ffffff !important; color: #333 !important;
-    border: 1px solid #d9dbdb !important;
-}
-/* Sidebar */
+
+/* ── Sidebar ── */
 section[data-testid="stSidebar"] { background: #f0f4f0 !important; }
+section[data-testid="stSidebar"] .stMarkdown { color: #333 !important; }
+
 .zone-pill {
     display: inline-block;
     background: rgba(37,211,102,.12);
@@ -87,10 +49,11 @@ section[data-testid="stSidebar"] { background: #f0f4f0 !important; }
     padding: 3px 10px; font-size: 11.5px;
     font-weight: 500; margin: 2px;
 }
-/* Fare / payment / confirmed cards */
+
+/* ── Fare / payment / confirmed cards (chat tab) ── */
 .fare-card, .payment-card, .confirmed-card {
     border-radius: 14px; padding: 16px 18px;
-    margin: 6px 0 10px; font-family: 'Inter', sans-serif;
+    margin: 6px 0 10px;
 }
 .fare-card {
     background: linear-gradient(135deg,#1a3a2a,#0f3d2a);
@@ -106,37 +69,8 @@ section[data-testid="stSidebar"] { background: #f0f4f0 !important; }
     background: linear-gradient(135deg,#128C7E,#25D366);
     box-shadow: 0 4px 20px rgba(37,211,102,.3);
 }
-</style>
-""", unsafe_allow_html=True)
-else:
-    st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-* { font-family: 'Inter', sans-serif !important; }
-body, .stApp, [data-testid="stAppViewContainer"], .main,
-[data-testid="stMain"], [data-testid="stMainBlockContainer"],
-.block-container {
-    background: #0d1117 !important;
-    color: #c9d1d9 !important;
-}
-#MainMenu, header, footer, [data-testid="stToolbar"],
-[data-testid="stDecoration"] { display: none !important; }
-.block-container {
-    max-width: 1100px !important;
-    padding: 2rem 1.5rem !important;
-}
-/* Sidebar */
-section[data-testid="stSidebar"] { background: #161b22 !important; border-right: 1px solid #30363d !important; }
-section[data-testid="stSidebar"] * { color: #c9d1d9 !important; }
-.zone-pill {
-    display: inline-block;
-    background: rgba(56,139,253,0.15);
-    border: 1px solid rgba(56,139,253,0.4);
-    color: #58a6ff; border-radius: 12px;
-    padding: 3px 10px; font-size: 11.5px;
-    font-weight: 500; margin: 2px;
-}
-/* Sleek card styling */
+
+/* ── Dashboard metric cards ── */
 .metric-card {
     background: #161b22;
     border: 1px solid #30363d;
@@ -157,6 +91,60 @@ section[data-testid="stSidebar"] * { color: #c9d1d9 !important; }
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
+}
+
+/* ── Chat tab — center a narrow column ── */
+.chat-tab-wrap {
+    background: #efeae2;
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+/* ── Dashboard tab background ── */
+.dash-tab-wrap {
+    background: #0d1117;
+    color: #c9d1d9;
+    border-radius: 12px;
+    padding: 1.5rem;
+    min-height: 500px;
+}
+.dash-tab-wrap h3, .dash-tab-wrap h4 {
+    color: #e6edf3 !important;
+}
+
+/* Buttons */
+.stButton > button {
+    border-radius: 24px !important;
+    font-weight: 600 !important;
+    padding: 10px 22px !important;
+    font-size: 14px !important;
+    transition: all .15s !important;
+    border: none !important;
+}
+
+/* Chat input styling */
+[data-testid="stBottom"] {
+    background: #f0f2f5 !important;
+    border-top: 1px solid #e9edef !important;
+    padding: 8px 12px !important;
+}
+[data-testid="stChatInput"] textarea {
+    background: #ffffff !important;
+    border-radius: 24px !important;
+    border: none !important;
+    font-size: 15px !important;
+    padding: 10px 18px !important;
+    color: #111 !important;
+}
+
+/* Constrain chat tab width */
+[data-testid="stTabsContent"]:first-child {
+    max-width: 560px;
+    margin: 0 auto;
+    background: #efeae2;
+    border-radius: 12px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -442,7 +430,9 @@ with st.sidebar:
 # ── Main Rendering ────────────────────────────────────────────────────────────
 init_session()
 
-if view == "💬 Ride Booking Chat":
+tab1, tab2 = st.tabs(["💬 Ride Booking Chat", "📊 Operations Dashboard"])
+
+with tab1:
     # ── WhatsApp header ──────────────────────────────────────────────────────
     components.html("""
 <!DOCTYPE html>
@@ -546,8 +536,9 @@ body { background: #008069; }
             st.session_state.messages.append({"role": "bot", "text": reply, "time": now_time()})
             st.rerun()
 
-else:
+with tab2:
     # ── Operations Dashboard view ─────────────────────────────────────────────
+    st.markdown('<div class="dash-tab-wrap">', unsafe_allow_html=True)
     st.title("📊 SureRide Operations Dashboard")
     st.caption("iLabAfrica | Strathmore University Capstone Analytics")
     st.markdown("---")
@@ -633,4 +624,4 @@ else:
         {"Reference": "SR-9478", "Passenger": "Grace M.", "Route": "Runda ➔ Lavington", "Fare": "KES 740", "PesaPal Ref": "PP-9428100", "Status": "Paid"},
     ]
     st.dataframe(pd.DataFrame(feed_data).set_index("Reference"), use_container_width=True)
-
+    st.markdown('</div>', unsafe_allow_html=True)
