@@ -328,25 +328,25 @@ def rag_tool_node(state: BookingState) -> dict:
 
     try:
         from rag.retriever import get_retriever
-        retriever = get_retriever(k=3)
+        retriever = get_retriever(k=2)
         docs      = retriever.invoke(query)
-        context   = "\n\n".join(d.page_content for d in docs) if docs else ""
 
-        if context:
-            prompt = (
-                "You are the SureRide AI assistant. Use ONLY the context below to answer "
-                "the customer's question concisely and in a friendly, conversational tone. "
-                "Do not make up information. Keep the answer under 4 sentences.\n\n"
-                f"Context:\n{context}\n\n"
-                f"Customer question: {query}\n\nAnswer:"
-            )
-            response = llm.invoke(prompt)
-            answer   = response.content.strip()
+        if docs:
+            # Return the best matching FAQ chunk directly — no extra LLM call needed.
+            # The FAQ is already well-written customer-facing text.
+            best  = docs[0].page_content.strip()
+            # Strip section header lines (e.g. "SECTION 4: ...")
+            lines = [l for l in best.splitlines()
+                     if not l.startswith("SECTION") and not l.startswith("---") and l.strip()]
+            answer = " ".join(lines).strip() or best
         else:
             answer = "I don't have that detail right now — type *help* to reach our support team."
 
-    except Exception:
-        answer = "I'm loading my knowledge base. Please try again in a moment!"
+    except Exception as e:
+        import sys
+        print(f"[RAG ERROR] {type(e).__name__}: {e}", file=sys.stderr)
+        answer = "I couldn't look that up right now — type *help* to reach our support team."
+
 
     prompt_append = ""
     if previous_step == "collect_name":
